@@ -1,0 +1,66 @@
+body, td, pre {
+	font-size: 0.8em;
+}
+/* tiny_mce's convertSpansToFonts function empties fontSize (when editing it always uses fonts internaly) */
+span[size='1']{font-size:xx-small}
+span[size='2']{font-size:x-small}
+span[size='3']{font-size:small}
+span[size='4']{font-size:medium}
+span[size='5']{font-size:large}
+span[size='6']{font-size:x-large}
+span[size='7']{font-size:xx-large}
+
+.exe-layout-2-cols,.exe-layout-3-cols{width:100%}
+.exe-layout-2-cols .exe-col{float:left;width:49%}
+.exe-layout-2-cols .exe-col-1{padding-right:1%}
+.exe-layout-2-cols .exe-col-2{padding-left:1%}
+.exe-layout-2-30-70 .exe-col{width:69%}
+.exe-layout-2-30-70 .exe-col-1{width:29%}
+.exe-layout-2-70-30 .exe-col{width:29%}
+.exe-layout-2-70-30 .exe-col-1{width:69%}
+.exe-layout-3-cols .exe-col{float:left;width:32%}
+.exe-layout-3-cols .exe-col-1,.exe-layout-3-cols .exe-col-2{padding-right:2%}
+
+/* Blocks */
+.exe-block-warning{background:#FCF8E3;color:#796034;border:1px solid #FAEBCC;padding:0 1em;border-radius:4px}
+p.exe-block-warning{padding:1em}
+.exe-block-alert{background:#ffc;color:#855000;border:1px solid #FFF099;padding:0 1em;border-radius:4px}
+p.exe-block-alert{padding:1em}
+.exe-block-danger{background:#FEF0EF;color:#973C3B;border:1px solid #F3DADD;padding:0 1em;border-radius:4px}
+p.exe-block-danger{padding:1em}
+.exe-block-info{background:#E1F1F9;color:#2B627D;border:1px solid #C9EDF4;padding:0 1em;border-radius:4px}
+p.exe-block-info{padding:1em}
+.exe-block-success{background:#E5F3E0;color:#336634;border:1px solid #DEEDD1;padding:0 1em;border-radius:4px}
+p.exe-block-success{padding:1em}
+.exe-block-warning a{color:#4F360A}
+.exe-block-alert a{color:#5B2600}
+.exe-block-danger a{color:#6D1211}
+.exe-block-info a{color:#063853}
+.exe-block-success a{color:#093C0A}
+
+.exe-clear {overflow:auto}
+/* Structured lists */
+ol.auto-numbered{counter-reset:item}
+.auto-numbered ol{counter-reset:item}
+.auto-numbered li{display:block}
+.auto-numbered li:before {content:counters(item,".") ".- ";counter-increment:item}
+/* In TinyMCE, hidden elements are shown */
+body .exe-hidden{display:inherit;filter:alpha(opacity=40);opacity:0.4;margin:0.5em;padding-left:25px;background:url(../images/exe_hidden.png) no-repeat 0 0}
+body .exe-hidden-accessible{position:static;overflow:visible;clip:auto;height:auto;filter:alpha(opacity=40);opacity:0.4;margin:0.5em;padding-left:25px;background:url(../images/exe_hidden_accessible.png) no-repeat 0 0}
+/* Quote With Authorship */
+.styled-qc{font-family:Georgia,serif;font-style:italic;width:80%;margin:1.5em auto;padding:0.25em 40px;position:relative}
+.styled-qc:before{display:block;content:"\201C";font-size:5em;position:absolute;left:0;top:-20px}
+/* Tables */
+.exe-table{background:#fff;margin:2em auto;max-width:100%;border:1px solid #CCC;border-collapse:collapse;border-spacing:0}
+.exe-table caption{padding:.5em 0;text-align:center;font-style:italic}
+.exe-table td,.exe-table th{border:1px solid #CCC;margin:0;padding:0.5em 1em;font-size:inherit}
+.exe-table thead{background:#ddd;color:#000;text-align:left}
+.exe-table tr:nth-child(2n-1) td,.exe-table tbody tr:nth-child(2n-1) th{background:#F4F4F4}
+.exe-table-minimalist{background:#fff;margin:2em auto;border-collapse:collapse}
+.exe-table-minimalist thead th{color:#000;padding:.6em 1.5em .6em .8em;border-bottom:2px solid #CCC;text-align:left}
+.exe-table-minimalist td,.exe-table-minimalist tbody th{border-bottom:1px solid #ccc;color:#555;padding:.5em 1.5em .5em .8em;font-size:inherit}
+.exe-table-minimalist tbody tr:hover td,.exe-table-minimalist tbody tr:hover th{color:#222}
+.exe-table-minimalist tr:nth-child(2n-1) td,.exe-table-minimalist tbody tr:nth-child(2n-1) th{background:#F9F9F9}
+.exe-table-minimalist caption{text-align:center;font-style:italic;border-bottom:2px solid #CCC;padding:.6em 0}
+/* To review */
+abbr[title],acronym[title]{text-decoration:none;border-bottom:1px dotted}

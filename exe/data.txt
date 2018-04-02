@@ -1,0 +1,1 @@
+{"locale": "en", "cutFileName": "0", "editorVersion": "4", "docType": "HTML5", "forceEditableExport": "0", "editorMode": "permissive", "defaultLicense": "creative commons: attribution - share alike 4.0", "internalAnchors": "enable_all", "showPreferencesOnStart": "0", "browser": "None"}

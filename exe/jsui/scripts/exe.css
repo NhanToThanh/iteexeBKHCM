@@ -1,0 +1,101 @@
+#loading-mask {
+  position: absolute;
+  left:     0;
+  top:      0;
+  width:    100%;
+  height:   100%;
+  z-index:  20000;
+  background-color: white;
+}
+
+#loading {
+  position: absolute;
+  left:     50%;
+  top:      50%;
+  padding:  2px;
+  z-index:  20001;
+  height:   auto;
+  margin:   -85px 0 0 -170px;
+  text-align: center;
+  font:       bold 13px tahoma,arial,helvetica;
+  color:      #555;
+}
+
+#loading .loading-indicator {
+  background: url(../images/exe_logo.png) no-repeat center;
+  padding:    0px 0px 90px 0px;
+  margin:     0;
+  height:     auto;
+}
+
+.property-form-dirty {
+  background-image: url('../jsui/extjs/resources/themes/images/default/grid/dirty.gif');
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+
+fieldset.collapsed-with-data > legend > div, fieldset.collapsed-with-data > legend > div > bold > i {
+  font-weight: bold;
+}
+
+/* Styles Manager window */
+#stylemanagerwin {
+}
+#stylemanagerwin .repository-style {
+  text-align: center;
+}
+/* Expanded panels, header background matching content background (white) and bigger title */
+#stylemanagerwin :not(.x-panel-collapsed).import-style-url .x-panel-header,
+#stylemanagerwin :not(.x-panel-collapsed).repository-style .x-panel-header {
+  background-color: #ffffff !important;
+  border-bottom: none;
+  font-weight: bold;
+}
+#stylemanagerwin :not(.x-panel-collapsed).repository-style .x-accordion-hd.x-panel-header .x-panel-header-text {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+#stylemanagerwin .repository-style .x-panel-body {
+	border: none;
+}
+#stylemanagerwin .repository-style .x-panel-body img {
+  max-width: 90%;
+  max-height: 90%;
+  height: auto;
+  margin: 1em auto;
+}
+#stylemanagerwin .repository-style .x-panel-body ul {
+  display: inline-block;
+  float: left;
+  margin: 0.25em;
+  margin-left: 1em;
+}
+#stylemanagerwin .repository-style .x-panel-body ul li {
+  display: inline-block;
+  float: left;
+  margin: 0.25em;
+  padding: 3px;
+  border-radius: 3px;
+  border: 1px solid #cfcfcf;
+  background-color: #fcfcfc;
+}
+#stylemanagerwin .repository-style .x-panel-body .repository-style-author, 
+#stylemanagerwin .repository-style .x-panel-body .repository-style-license, 
+#stylemanagerwin .repository-style .x-panel-body .repository-style-read-more {
+  text-align: left;
+  margin-left: 1em;
+}
+#stylemanagerwin .repository-style .x-panel-body .repository-style-author a,
+#stylemanagerwin .repository-style .x-panel-body .repository-style-license a,
+#stylemanagerwin .repository-style .x-panel-body .repository-style-read-more a {
+	text-decoration: none;
+	color: #5D7E1A;
+	font-weight: bold;
+}
+#stylemanagerwin .repository-style .x-panel-body .repository-style-read-more a:before {
+	content: "+ ";
+}
+}
+#stylemanagerwin .import-style-url .x-panel-body .x-btn {
+	margin-left: 1em;
+}
