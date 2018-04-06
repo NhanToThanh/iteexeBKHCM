@@ -540,7 +540,7 @@ xsi:schemaLocation="http://www.imsglobal.org/xsd/imscc/imscp_v1p1 imscp_v1p1.xsd
                                  readSatisfiedStatus = "true" writeSatisfiedStatus = "true"/>
                            </imsss:primaryObjective>
                          </imsss:objectives>\n'''
-                if page.node.sTimer != 0:
+                if page.node.sTimer != 0 or page.node.isQuizzPass:
                     seqStr +=  '''<imsss:deliveryControls completionSetByContent="true" objectiveSetByContent="true"/>'''
                 seqStr +=    '''</imsss:sequencing> '''
             else: #idTarget is SET
@@ -579,7 +579,7 @@ xsi:schemaLocation="http://www.imsglobal.org/xsd/imscc/imscp_v1p1 imscp_v1p1.xsd
                            </imsss:objective>
 
                          </imsss:objectives>'''
-                if page.node.sTimer != 0:
+                if page.node.sTimer != 0 or page.node.isQuizzPass:
                     seqStr +=  '''<imsss:deliveryControls completionSetByContent="true" objectiveSetByContent="true"/>'''
                 seqStr +=    '''</imsss:sequencing> '''
         return seqStr
