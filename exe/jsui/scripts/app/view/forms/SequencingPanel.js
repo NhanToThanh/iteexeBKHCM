@@ -144,14 +144,14 @@ Ext.define('eXe.view.forms.SequencingPanel', {
     		                nodeid = selected[0].data.id;
     	                index = (index ==-1)?0:index;
                         studyTimer = (studyTimer=="")?"0":studyTimer;
-                        isQuizPass = (isQuizPass)?isQuizPass:!isQuizPass;
+                        isQuizPassstr = (isQuizPass)?'true':'false';
                         form.submit({
                             success: function () {
                                 if (nodeid == index){
                                     Ext.Msg.alert('Seclect another target','PLease selected another target node!');
                                 }
                                 else{
-                                    nevow_clientToServerEvent('AddTarget',this, '', nodeid, index, studyTimer, isQuizPass);
+                                    nevow_clientToServerEvent('AddTarget',this, '', nodeid, index, studyTimer, isQuizPassstr);
 
                                     Ext.getCmp('sequencingwin').doClose();
 
