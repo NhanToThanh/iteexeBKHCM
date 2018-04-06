@@ -45,6 +45,7 @@ from exe.jsui.propertiespage     import PropertiesPage
 from exe.webui.authoringpage     import AuthoringPage
 from exe.webui.stylemanagerpage  import StyleManagerPage
 from exe.webui.renderable        import File
+#from exe.webui.sequencingspage import SequencingPage ####Minh
 from exe.export.websiteexport    import WebsiteExport
 from exe.export.textexport       import TextExport
 from exe.export.singlepageexport import SinglePageExport
@@ -65,6 +66,7 @@ from exe.export.xmlexport        import XMLExport
 from requests_oauthlib           import OAuth2Session
 from exe.webui.oauthpage         import ProcomunOauth
 from suds.client                 import Client
+from exe.webui.authoringpagefake import AuthoringPagefake
 
 from exe.engine.lom import lomsubs
 from exe.engine.lom.lomclassification import Classification
@@ -87,6 +89,7 @@ class MainPage(RenderableLivePage):
         Initialize a new Javascript page
         'package' is the package that we look after
         """
+        #self.sequencings = SequencingPage(self)
         self.name = package.name
         self.session = session
         RenderableLivePage.__init__(self, parent, package, config)
@@ -124,6 +127,9 @@ class MainPage(RenderableLivePage):
             clientid = request.args['clientHandleId'][0]
             if clientid not in self.authoringPages:
                 self.authoringPages[clientid] = AuthoringPage(self)
+                #AuthoringPagefake(self)
+                #a= self.package.root
+                #self.sequencings = SequencingPage(self, packRoot = self.package.root)
                 self.children.pop('authoring')
             return self.authoringPages[clientid]
         else:
@@ -213,6 +219,12 @@ class MainPage(RenderableLivePage):
         setUpHandler(self.outlinePane.handleAddChild, 'AddChild')
         setUpHandler(self.outlinePane.handleDelNode, 'DelNode')
         setUpHandler(self.outlinePane.handleRenNode, 'RenNode')
+
+        #####################################################################################3
+
+        setUpHandler(self.outlinePane.handleAddTarget, 'AddTarget')
+
+        #####################################################################################
         setUpHandler(self.outlinePane.handlePromote, 'PromoteNode')
         setUpHandler(self.outlinePane.handleDemote, 'DemoteNode')
         setUpHandler(self.outlinePane.handleUp, 'UpNode')

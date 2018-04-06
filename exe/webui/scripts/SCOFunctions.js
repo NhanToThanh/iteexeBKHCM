@@ -83,6 +83,18 @@ var exitPageStatus;
 //creating shortcut for less verbose code
 var scorm = pipwerks.SCORM;
 
+function doLimitTime() {
+			var max_time_allowed = scorm.get("cmi.max_time_allowed");
+			if (max_time_allowed) {
+
+				max_time_allowed = max_time_allowed.substring(2, max_time_allowed.length - 1);
+				var timelimit = parseInt(max_time_allowed);
+				alert("This pages require " + timelimit+ "s to study");
+				setMaxTimeAllow(timelimit);
+
+			}
+	}
+
 
 function loadPage()
 {
@@ -98,6 +110,7 @@ function loadPage()
 
 	exitPageStatus = false;
 	startTimer();
+	doLimitTime();
 }
 
 

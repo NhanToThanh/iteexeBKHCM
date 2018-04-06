@@ -33,6 +33,7 @@ import exe.webui.builtinblocks
 from exe.webui.blockfactory  import g_blockFactory
 from exe.engine.error        import Error
 from exe.webui.renderable    import RenderableResource
+from exe.webui.sequencingspage import SequencingPage
 from exe.engine.path         import Path
 from exe                     import globals as G
 import re
@@ -50,6 +51,8 @@ class AuthoringPage(RenderableResource):
     def __init__(self, parent):
         RenderableResource.__init__(self, parent)
         self.blocks  = []
+        #.sequencings = SequencingPage(self, packRoot=self.package.root)
+
 
     def getChild(self, name, request):
         """
@@ -139,6 +142,7 @@ class AuthoringPage(RenderableResource):
         self.blocks = []
         self.__addBlocks(topNode)
         html  = self.__renderHeader()
+
         html += u'<body onload="onLoadHandler();" class="exe-authoring-page js">\n'
         html += u"<form method=\"post\" "
 
@@ -186,11 +190,13 @@ class AuthoringPage(RenderableResource):
         
         html += common.renderLicense(self.package.license,"authoring")
         html += common.renderFooter(self.package.footer)
+
         
         if style.hasValidConfig:
             html += style.get_edition_extra_body()
         html += '<script type="text/javascript">$exeAuthoring.ready()</script>\n'
         html += common.footer()
+        html += self.seqFooter()
 
         html = html.encode('utf8')
         return html
@@ -272,5 +278,10 @@ class AuthoringPage(RenderableResource):
                 log.critical(u"Unable to render iDevice.")
                 raise Error(u"Unable to render iDevice.")
             self.blocks.append(block)
+
+    def seqFooter(self):
+
+        self.sequencings = SequencingPage(self, packRoot=self.package.root)
+        return unicode('')
 
 # ===========================================================================

@@ -29,10 +29,12 @@ import logging
 import json
 from twisted.web.resource import Resource
 from exe.webui.renderable import RenderableResource
+
 import mywebbrowser
 from exe.engine.path import Path
 import os.path
 from exe.webui import common
+import io
 
 log = logging.getLogger(__name__)
 
@@ -92,7 +94,8 @@ langNames = {
    # 'zh_tw': '\xe7\xae\x80\xe4\xbd\x93\xe4\xb8\xad\xe6\x96\x87',
    'zh_CN': '简体中文',
    'zh_TW': '正體中文（台灣)',
-   'zu': 'isiZulu'
+   'zu': 'isiZulu',
+    'zz': 'zzzzz'
 }
 
 browsersHidden = ('xdg-open', 'gvfs-open', 'x-www-browser', 'gnome-open', 'kfmclient', 'www-browser', 'links',
@@ -125,7 +128,7 @@ browserNames = {
                 "midori": "Midori",
                 "microsoft-edge": "Microsoft Edge",
                 "None": "default"
-        }
+}
 
 
 class PreferencesPage(RenderableResource):
@@ -144,7 +147,6 @@ class PreferencesPage(RenderableResource):
         self.localeNames = []
         self.browsers = []
         self.licensesNames=[]
-
         for locale in self.config.locales.keys():
             localeName = locale + ": "
             langName = langNames.get(locale)
@@ -162,12 +164,17 @@ class PreferencesPage(RenderableResource):
         for licenses in common.getPackageLicenses():
             self.licensesNames.append({'licenseName': licenses,'text':_(licenses)})
 
-
+    def __getNodeOptionsadd(self, node, depth):
+        options = [(u'&nbsp;&nbsp;&nbsp;'*depth + node.titleLong, node.id)]
+        for child in node.children:
+            options += self.__getNodeOptionsadd(child, depth+1)
+        return options
 
     def getChild(self, name, request):
         """
         Try and find the child for the name given
         """
+
         if name == "":
             return self
         else:
@@ -175,6 +182,9 @@ class PreferencesPage(RenderableResource):
 
     def render_GET(self, request):
         """Render the preferences"""
+        #aa = u'This not a String:\n' + request
+        #with io.open('C:\data3.txt', 'w', encoding='utf-8') as f:
+        #    f.write(aa)
         log.debug("render_GET")
         data = {}
         try:
@@ -194,6 +204,7 @@ class PreferencesPage(RenderableResource):
             if browserSelected == "custom-browser":
                 if os.path.exists(self.config.browser.name):
                     browserSelected = self.config.browser.name
+            #browserSelected = ['lavender', 'rose', 'daisy', 'lily']
             data['browser'] = browserSelected
             data['showPreferencesOnStart'] = self.config.showPreferencesOnStart
             data['forceEditableExport'] = self.config.forceEditableExport
@@ -201,12 +212,16 @@ class PreferencesPage(RenderableResource):
         except Exception as e:
             log.exception(e)
             return json.dumps({'success': False, 'errorMessage': _("Failed to get preferences")})
+        #with io.open('C:\data.txt', 'w', encoding='utf-8') as f:
+        #    f.write(json.dumps({'success': True, 'data': data, 'locales': self.localeNames, 'browsers': self.browsers,
+        #                'licensesNames': self.licensesNames}, ensure_ascii=False))
         return json.dumps({'success': True, 'data': data, 'locales': self.localeNames, 'browsers': self.browsers,'licensesNames':self.licensesNames})
 
     def render_POST(self, request):
         """
         function replaced by nevow_clientToServerEvent to avoid POST message
         """
+
         log.debug("render_POST " + repr(request.args))
         data = {}
         try:
@@ -222,7 +237,7 @@ class PreferencesPage(RenderableResource):
             editormodesel = request.args['editorMode'][0]
             self.config.editorMode = editormodesel
             self.config.configParser.set('user', 'editorMode', editormodesel)
-            
+
             editorveresel = request.args['editorVersion'][0]
             self.config.editorVersion = editorveresel
             self.config.configParser.set('user', 'editorVersion', editorveresel)
@@ -234,16 +249,17 @@ class PreferencesPage(RenderableResource):
             defaultLicense = request.args['defaultLicense'][0]
             self.config.defaultLicense = defaultLicense
             self.config.configParser.set('user', 'defaultLicense', defaultLicense)
-            
+
             forceEditableExport = request.args['forceEditableExport'][0]
             self.config.forceEditableExport = forceEditableExport
             self.config.configParser.set('user', 'forceEditableExport', forceEditableExport)
-            
+
             cutFileName = request.args['cutFileName'][0]
             self.config.cutFileName = cutFileName
             self.config.configParser.set('user', 'cutFileName', cutFileName)
-            
+
             browser = request.args['browser'][0]
+
             if browser == "None":
                 browser = None
             try:
@@ -256,7 +272,7 @@ class PreferencesPage(RenderableResource):
                 else:
                     raise e
             self.config.configParser.set('system', 'browser', browser)
-            
+
             showPreferencesOnStart = request.args['showPreferencesOnStart'][0]
             self.config.showPreferencesOnStart = showPreferencesOnStart
             self.config.configParser.set('user', 'showPreferencesOnStart', showPreferencesOnStart)

@@ -46,7 +46,8 @@ except:
             # If everything else fails, it may be Windows fault
             import sys
             if sys.platform[:3] == "win":
-                pkg_version = open(sys.prefix + '/version').readline()
+                #print sys.prefix
+                pkg_version = "2.1.3-r8396514e5a0e1da4bc25d9b41db39ff96adff9fb"
                 release = pkg_version[0:-42]
             else:
                 # Or we try to get it from Resources

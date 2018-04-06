@@ -61,7 +61,6 @@ Ext.define('eXe.view.forms.PreferencesPanel', {
 								autoLoad: true
 							}
 						}, {
-
 							xtype: 'container',
 							layout: 'hbox',
 							//layout:'column',

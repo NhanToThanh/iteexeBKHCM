@@ -41,6 +41,7 @@ finally:
 from exe.webui.editorpage          import EditorPage
 from exe.webui.stylemanagerpage    import StyleManagerPage
 from exe.webui.preferencespage     import PreferencesPage
+from exe.webui.sequencingspage     import SequencingPage
 from exe.webui.aboutpage           import AboutPage
 from exe.webui.releasenotespage    import ReleaseNotesPage
 from exe.webui.styledesigner import StyleDesigner
@@ -76,6 +77,7 @@ class WebServer:
         self.editor = EditorPage(self.root)
         self.stylemanager = StyleManagerPage(self.root)
         self.preferences = PreferencesPage(self.root)
+        self.sequencings = SequencingPage(self.root)
         self.xliffimportpreferences = XliffImportPreferencesPage(self.root)
         self.dirtree = DirTreePage(self.root)
         self.about = AboutPage(self.root)

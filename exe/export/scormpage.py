@@ -135,6 +135,7 @@ class ScormPage(Page):
             html += u"<body id=\""+self.node.id+"\" class=\"exe-scorm\" "
         else:
             html += u"<script type=\"text/javascript\" src=\"SCORM_API_wrapper.js\"></script>"+lb
+            html += u"<script type=\"text/javascript\" src=\"timer.js\"></script>" + lb
             html += u"<script type=\"text/javascript\" src=\"SCOFunctions.js\"></script>"+lb
             if style.hasValidConfig:
                 html += style.get_extra_head()

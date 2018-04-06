@@ -26,6 +26,7 @@ import logging
 from exe.webui.renderable import Renderable
 from exe.webui.livepage import allSessionPackageClients
 from twisted.web.resource import Resource
+from exe.webui.sequencingspage import SequencingPage
 log = logging.getLogger(__name__)
 
 
@@ -44,6 +45,9 @@ class OutlinePane(Renderable, Resource):
         if parent:
             self.parent.putChild(self.name, self)
         Resource.__init__(self)
+        #b = self.package.root
+        #self.sequencings = SequencingPage(None, packRoot = self.package.root)
+
 
     def process(self, request):
         """
@@ -108,6 +112,24 @@ class OutlinePane(Renderable, Resource):
 
         client.sendScript('eXe.app.getController("Outline").reload()', filter_func=allSessionPackageClients)
         client.call('eXe.app.getController("Outline").loadNodeOnAuthoringPage', client.currentNodeId)
+
+    def handleAddTarget(self, client, nodeId, targetIndex, studyTimer, isQuiz):
+
+        tempnode = nodeId
+        stuTimer = int(studyTimer)
+        isQuizPass = isQuiz
+        targetnodeId = unicode('')
+        targetNodeIndex = unicode(targetIndex)
+        currNode = self.package.findNode(nodeId)
+        currNode.idTarget = targetNodeIndex
+        currNode.sTimer = stuTimer
+        client.sendScript('eXe.app.getController("Outline").reload()', filter_func=allSessionPackageClients)
+        client.call('eXe.app.getController("Outline").loadNodeOnAuthoringPage', client.currentNodeId)
+
+
+
+    def setNodeTarget(self, currentNode, targetNodeIndex):
+        currentNode.target = targetNodeIndex
 
     def handleSetTreeSelection(self, client):
         """

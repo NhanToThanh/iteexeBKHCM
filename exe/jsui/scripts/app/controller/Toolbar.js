@@ -22,6 +22,7 @@ Ext.define('eXe.controller.Toolbar', {
     requires: [
         'eXe.view.forms.PreferencesPanel',
         'eXe.view.forms.StyleManagerPanel',
+        'eXe.view.forms.SequencingPanel',
     ],
 	refs: [{
         ref: 'recentMenu',
@@ -84,6 +85,10 @@ Ext.define('eXe.controller.Toolbar', {
             '#file_export_scorm2004': {
                 click: { fn: this.processExportEvent, exportType: "scorm2004" }
             },
+            //25/01/2018
+            '#file_export_scorm2004seq': {
+                click: { fn: this.processExportEvent, exportType: "scorm2004seq" }
+            },
             '#file_export_agrega': {
                 click: { fn: this.processExportEvent, exportType: "agrega" }
             },
@@ -131,6 +136,9 @@ Ext.define('eXe.controller.Toolbar', {
             },
             '#file_extract': {
                 click: this.extractPackage
+            },
+            '#seq_Config':{
+                click: this.seqConfig
             },
             '#file_quit': {
                 click: this.fileQuit
@@ -591,6 +599,25 @@ Ext.define('eXe.controller.Toolbar', {
         );
         f.show();        
 	},
+
+    seqConfig: function() {
+        var sequencing = new Ext.Window ({
+              height: 390,
+              width: 650,
+              modal: true,
+              id: 'sequencingwin',
+              title: _("Sequencings"),
+              layout: 'fit',
+              items: [{
+                xtype: 'sequencing'
+              }]
+            }),
+            formpanel = sequencing.down('form');
+            formpanel.load({url: 'sequencing', method: 'GET'});
+            sequencing.show();
+
+    },
+
 
     importHtml: function(){
         var fp = Ext.create("eXe.view.filepicker.FilePicker", {

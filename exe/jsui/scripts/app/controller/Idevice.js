@@ -1,4 +1,5 @@
 // ===========================================================================
+// ===========================================================================
 // eXe
 // Copyright 2012, Pedro Peña Pérez, Open Phoenix IT
 //
@@ -36,6 +37,7 @@ Ext.define('eXe.controller.Idevice', {
             var outlineTreePanel = eXe.app.getController("Outline").getOutlineTreePanel(),
                 selected = outlineTreePanel.getSelectionModel().getSelection();
             authoring.submitLink("AddIdevice", record.data.id, 1, selected !== 0? selected[0].data.id : '0');
+            a= 1
         }
     },
     

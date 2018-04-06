@@ -148,6 +148,9 @@ Ext.define('eXe.controller.Outline', {
 		    },{
 			    text: _('Extract Package'),
 			    handler: this.getController('Toolbar').extractPackage
+            },{
+                text: _('Sequcing config'),
+                handler: this.getController('Toolbar').seqConfig
             }
           ]
 		});
@@ -175,8 +178,12 @@ Ext.define('eXe.controller.Outline', {
     	this.reload();
     },
     
+    //Can do songthing here 15.11
+    //
     onNodeClick: function(view, record, item, index, e, eOpts) {
     	this.loadNodeOnAuthoringPage(record.data.id);
+        //var test = this.getOutlineTreePanel();
+        //alert("You click"+ record.data.textt);
         document.title = "eXe : " + record.data.text;
     },
     
@@ -247,6 +254,7 @@ Ext.define('eXe.controller.Outline', {
         var authoring = Ext.ComponentQuery.query('#authoring')[0].getWin();
         if (authoring && authoring.submitLink)
     		authoring.submitLink('changeNode', node, 0);
+
     },
     
     //called from exe.jsui.outlinepane.OutlinePane.handleSetTreeSelection

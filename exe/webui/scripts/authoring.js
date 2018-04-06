@@ -443,6 +443,7 @@ function execute_submitLink(action, object, changed, currentNode)
 	    theForm.action.value    = action;
 	    theForm.object.value    = object;
 	    theForm.isChanged.value = changed;
+
         if (currentNode)
             theForm.currentNode.value = currentNode;
         theForm.clientHandleId.value = top.nevow_clientHandleId;
@@ -451,8 +452,20 @@ function execute_submitLink(action, object, changed, currentNode)
 	    theForm.submit();
     }
 }
-function submitLink(action, object, changed, currentNode) 
+function submitLink(action, object, changed, currentNode)
 {
+        /*
+	    var astr ='';
+	    astr += 'action: '
+        astr += action;
+	    astr += '\nobject: '
+        astr += object;
+	    astr += '\nchanged: '
+        astr += changed;
+	    astr += '\nCurrentNode: '
+        astr += currentNode;
+        alert(astr);
+        */
     var ed = "";
     if (typeof(tinyMCE)!='undefined' && tinyMCE.activeEditor) ed = tinyMCE.activeEditor;
     if (ed!="" && ed.id=="mce_fullscreen") {

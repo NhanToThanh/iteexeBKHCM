@@ -78,6 +78,8 @@ if (auto_open) {
 
 
 function nevow_clientToServerEvent(theTarget, node, evalAfterDone) {
+
+    //alert(astr);
     if (theTarget != 'close' && liveevil_unload) {
         // Server had previously closed the output; let's open it again.
         if (auto_open) {
@@ -103,12 +105,12 @@ function nevow_clientToServerEvent(theTarget, node, evalAfterDone) {
       '&client-handle-id=' +
       nevow_clientHandleId +
       additionalArguments)
-
     input.send(null)
 }
 
 
 function nevow_clientToServerEventPOST(theTarget, node, evalAfterDone, async) {
+
 	if (theTarget != 'close' && liveevil_unload) {
 		// Server had previously closed the output; let's open it again.
 		if (auto_open) {

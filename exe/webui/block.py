@@ -25,6 +25,7 @@ import sys
 from exe.webui import common
 from exe.webui.renderable import Renderable
 from exe.engine.idevice   import Idevice
+import io
 
 import logging
 log = logging.getLogger(__name__)
@@ -48,11 +49,14 @@ class Block(Renderable):
         self.purpose = idevice.purpose
         self.tip     = idevice.tip
 
+
         if idevice.edit:
             self.mode = Block.Edit
         else:
             self.mode = Block.Preview
-
+        #astr = u'{"Nodes":[{"value":"Home", "text":"Home"}, {"value":"Topic1", "text":"Topic01"}, {"value":"Section1", "text":"Section01"}, {"value":"Section2", "text":"Section02"}, {"value":"Topic2", "text":"Topic02"}, {"value":"Section1", "text":"Section01"}]}'
+        #with io.open('C:\data2.txt', 'w', encoding='utf-8') as f:
+        #    f.write(astr)
 
     def process(self, request):
         """
