@@ -318,8 +318,21 @@ class QuizTestBlock(Block):
            actualScore = Math.round(rawScore / numQuestions * 100);
         """
 
+        scriptStr += '''\n
+        submsg = "";
+                
+                if (actualScore < %s){
+                submsg += ", Pass rate is %s, You Fail the Quzi";
+                }
+                else{
+                submsg += ", You pass the Quiz";
+                }
+               ''' % (self.idevice.passRate, self.idevice.passRate)
+
+
         scriptStr += '            var msg_str ="' + c_("Your score is %d%%") + '";'
-        scriptStr += '            alert(msg_str.replace("%d",actualScore).replace("%%","%"));'
+        scriptStr += '            alert(msg_str.replace("%d",actualScore).replace("%%","%") + submsg);'
+
         scriptStr += """  
           
            scorm.SetScoreRaw(actualScore+"" );

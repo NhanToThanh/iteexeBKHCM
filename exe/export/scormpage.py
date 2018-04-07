@@ -137,6 +137,8 @@ class ScormPage(Page):
             html += u"<script type=\"text/javascript\" src=\"SCORM_API_wrapper.js\"></script>"+lb
             html += u"<script type=\"text/javascript\" src=\"timer.js\"></script>" + lb
             html += u"<script type=\"text/javascript\" src=\"SCOFunctions.js\"></script>"+lb
+            #if self.node.isQuizzPass:
+            #    html += u'<script type="text/javascript">alert("This page have Quiz MUST Pass");</script>\n'
             if style.hasValidConfig:
                 html += style.get_extra_head()
             html += u"</head>"+lb            
