@@ -30,7 +30,7 @@ Ext.define('eXe.view.forms.SequencingPanel', {
 
     initComponent: function () {
         var me = this;
-        //var lngsel = _("Available when");
+
         var seqTarget = null;
         Ext.applyIf(me, {
             autoScroll: true,
@@ -45,7 +45,7 @@ Ext.define('eXe.view.forms.SequencingPanel', {
                 items: [
 					// Tab 0
 					{
-						title: _('sequencing Settings'),
+						title: _('Preconditions'),
 						//bodyPadding: 10,
 						items: [{
 							xtype: 'container',
@@ -73,14 +73,22 @@ Ext.define('eXe.view.forms.SequencingPanel', {
 									reader: {
 										type: 'json',
 										root: 'Nodes'
-
 									}
 								},
 
 								autoLoad: true
 									}
 								}]
-						},
+						}
+
+                        ]
+					},//Tab Precondition
+
+                    { //Tab Postcondition
+						title: _('Postconditions'),
+						bodyPadding: 10,
+						items: [
+							// Document Format
 							{
 								xtype: 'helpcontainer',
 								item: {
@@ -111,9 +119,8 @@ Ext.define('eXe.view.forms.SequencingPanel', {
 								help: _('Learner must pass the quiz to move to next page')
 							}
 
-                        ]
-					},
-
+						    ]
+					},//Tab Postcondition
 
 				],
             }, {
