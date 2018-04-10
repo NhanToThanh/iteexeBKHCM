@@ -18,7 +18,7 @@
 //===========================================================================
 
 Ext.define('eXe.view.ui.PostConditionPanel', {
-    extend: 'Ext.tab.Panel',
+    extend: 'Ext.panel.Panel',
     alias: 'widget.postconditionpanel',
 
 
@@ -26,32 +26,38 @@ Ext.define('eXe.view.ui.PostConditionPanel', {
         var me = this;
 
         Ext.applyIf(me, {
-            items: [
-                {
-                    xtype: 'button',
-                    icon: '/images/stock-goto-first.png',
-                    tooltip: _('Promote node up in hierarchy') + '. Ctrl+↑',
-                    itemId: 'outline_promote_node1'
-                },
-                {
-                    xtype: 'button',
-                    icon: '/images/stock-goto-last.png',
-                    tooltip: _('Demote node down in hierarchy') + '. Ctrl+↓',
-                    itemId: 'outline_demote_node1'
-                },
-                {
-                    xtype: 'button',
-                    icon: '/images/stock-go-up.png',
-                    tooltip: _('Move node up') + '. Ctrl+U',
-                    itemId: 'outline_up_node1'
-                },
-                {
-                    xtype: 'button',
-                    icon: '/images/stock-go-down.png',
-                    tooltip: _('Move node down') + '. Ctrl+D',
-                    itemId: 'outline_down_node1'
-                }
-            ]
+        				height: 309,
+						items: [
+							// Document Format
+							{
+								xtype: 'helpcontainer',
+								item: {
+									xtype: 'textfield',
+                                    id: 'stuTimer',
+									inputId: 'editorMode',
+									dirtyCls: 'property-form-dirty',
+									labelWidth: 150,
+                                    margin: 10,
+									fieldLabel: _('Time to study on this page'),
+								},
+								margin: 10,
+								help: _('Enter time for learner to stay on this page after next page to be available')
+							},
+                            {
+								xtype: 'helpcontainer',
+								item: {
+									xtype: 'checkbox',
+                                    id: 'isQuizz',
+                                    boxLabel: 'Pass the Quiz: ',
+                                    name: 'isQuiz',
+                                    checked: false,
+                                    inputValue: 'isQuiz',
+									dirtyCls: 'property-form-dirty',
+									labelWidth: 325,
+								},
+								margin: 10,
+								help: _('Learner must pass the quiz to move to next page')
+							}]
         });
 
         me.callParent(arguments);

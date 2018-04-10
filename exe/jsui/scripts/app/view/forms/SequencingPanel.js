@@ -18,6 +18,10 @@
 //===========================================================================
 Ext.define('eXe.view.forms.SequencingPanel', {
     extend: 'Ext.form.Panel',
+    requires: [
+        'eXe.view.ui.PostConditionPanel',
+        'eXe.view.ui.PreConditionPanel',
+    ],
     alias: 'widget.sequencing',
 
     refs: [
@@ -47,83 +51,23 @@ Ext.define('eXe.view.forms.SequencingPanel', {
 					{
 						title: _('Preconditions'),
 						//bodyPadding: 10,
-						items: [{
-							xtype: 'container',
-							layout: 'hbox',
-							//layout:'column',
-							border: 1,
-							margin: 10,
-							width: '94%',
-							items: [{
-							    xtype: 'combobox',
-                                id: 'seqTarget',
-							inputId: 'locale',
-							dirtyCls: 'property-form-dirty',
-							fieldLabel: _("Available when"),
-							labelWidth: 150,
-							margin: 10,
-							queryModel: 'local',
-							displayField: 'text',
-							valueField: 'value',
-							store: {
-								fields: ['value', 'text'],
-								proxy: {
-									type: 'ajax',
-									url: 'sequencing',
-									reader: {
-										type: 'json',
-										root: 'Nodes'
-									}
-								},
+                        items: [{
+						    bodyPadding: 10,
+                            xtype: 'preconditionpanel'
+                            }]
 
-								autoLoad: true
-									}
-								}]
-						}
-
-                        ]
 					},//Tab Precondition
 
                     { //Tab Postcondition
-						title: _('Postconditions'),
-						bodyPadding: 10,
-						items: [
-							// Document Format
-							{
-								xtype: 'helpcontainer',
-								item: {
-									xtype: 'textfield',
-                                    id: 'stuTimer',
-									inputId: 'editorMode',
-									dirtyCls: 'property-form-dirty',
-									labelWidth: 150,
-                                    margin: 10,
-									fieldLabel: _('Time to study on this page'),
-								},
-								margin: 10,
-								help: _('Enter time for learner to stay on this page after next page to be available')
-							},
-                            {
-								xtype: 'helpcontainer',
-								item: {
-									xtype: 'checkbox',
-                                    id: 'isQuizz',
-                                    boxLabel: 'Pass the Quiz: ',
-                                    name: 'isQuiz',
-                                    checked: false,
-                                    inputValue: 'isQuiz',
-									dirtyCls: 'property-form-dirty',
-									labelWidth: 325,
-								},
-								margin: 10,
-								help: _('Learner must pass the quiz to move to next page')
-							}
-
-						    ]
+                        title: _('Postconditions'),
+                        items: [{
+						    bodyPadding: 10,
+                            xtype: 'postconditionpanel'
+                            }]
 					},//Tab Postcondition
 
 				],
-            }, {
+                }, {
                 xtype: 'container',
                 layout: 'hbox',
                 style: {
