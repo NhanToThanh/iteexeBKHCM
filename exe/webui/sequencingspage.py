@@ -80,10 +80,16 @@ class SequencingPage(RenderableResource):
 
     def __isQuizz(self, idevices):
         for idevice in idevices:
-            a= str(type(idevice))
             if "QuizTestIdevice" in str(type(idevice)):
-                return " (Quiz)"
+                return " ( "+ str(self.__numQuizz(idevices)) + " Quiz)"
         return ""
+
+    def __numQuizz(self, idevices):
+        numq = 0
+        for idevice in idevices:
+            if "QuizTestIdevice" in str(type(idevice)):
+                numq += 1
+        return numq
 
 
     def render_GET(self, request):

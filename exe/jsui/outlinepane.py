@@ -123,8 +123,8 @@ class OutlinePane(Renderable, Resource):
         currNode = self.package.findNode(nodeId)
         currNode.idTarget = targetNodeIndex
         currNode.sTimer = stuTimer
-        if isQuiz =='true':
-            currNode.isQuizzPass = True
+
+        currNode.isQuizzPass = int(isQuiz)
         client.sendScript('eXe.app.getController("Outline").reload()', filter_func=allSessionPackageClients)
         client.call('eXe.app.getController("Outline").loadNodeOnAuthoringPage', client.currentNodeId)
 

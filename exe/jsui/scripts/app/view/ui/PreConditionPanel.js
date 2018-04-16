@@ -46,6 +46,7 @@ Ext.define('eXe.view.ui.PreConditionPanel', {
 							displayField: 'text',
 							valueField: 'value',
 							store: {
+							    storeId: 'combostore',
 								fields: ['value', 'text'],
 								proxy: {
 									type: 'ajax',

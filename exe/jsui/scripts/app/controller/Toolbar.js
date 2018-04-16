@@ -611,6 +611,7 @@ Ext.define('eXe.controller.Toolbar', {
               items: [{
                 xtype: 'sequencing'
               }]
+
             }),
             formpanel = sequencing.down('form');
             formpanel.load({url: 'sequencing', method: 'GET'});

@@ -127,7 +127,7 @@ class QuizTestBlock(Block):
 
         return html
 
-    def renderView(self, style, preview=False):
+    def renderView(self, style, preview=False, numQ = None):
         """
         Returns an XHTML string for viewing this block
         """
@@ -142,7 +142,7 @@ class QuizTestBlock(Block):
             else:
                 html += element.renderView()
         html += '<div class="block iDevice_buttons">'+lb
-        html += '<p><input type="submit" name="submitB" value="' + c_("SUBMIT ANSWERS")+'" /> '+common.javaScriptIsRequired()+'</p>'+lb
+        html += '<p><input type="submit" name="submitB" value="' + c_("SUBMIT ANSWERS")+ '"  onclick="calcScore2%s()" /> '%numQ + '</p>'+lb
         html += '</div>'+lb 
         html += '<div id="quizFormScore'+self.id+'"></div>'+lb
         html += '</form>'+lb
@@ -234,38 +234,38 @@ class QuizTestBlock(Block):
         return scriptStr
 
     
-    def renderJavascriptForScorm(self):
+    def renderJavascriptForScorm(self, thisnode = None, numQ = None):
         """
-        Return an XHTML string for generating the javascript for scorm export
+        Return an XHTML string for gene rating the javascript for scorm export
         """
+
         scriptStr  = '<script type="text/javascript">\n'
         scriptStr += '<!-- //<![CDATA[\n'
-        scriptStr += "var numQuestions = "
+        scriptStr += "var numQuestions" + str(numQ) +"= "
         scriptStr += unicode(len(self.questionElements))+";\n"
-        scriptStr += "var rawScore = 0;\n"
-        scriptStr += "var actualScore = 0;\n"
-        answerStr  = """function getAnswer()
-        {"""
+        scriptStr += "var rawScore" + str(numQ) +" = 0;\n"
+        scriptStr += "var actualScore" + str(numQ) +" = 0;\n"
+        answerStr  = """function getAnswer%s()
+        {"""%numQ
         varStrs     = ""
         keyStrs     = ""
         answers     = ""
         rawScoreStr = """}
-        function calcRawScore(){\n"""
-       
+        function calcRawScore%s(){\n"""%numQ
+
         for element in self.questionElements:
             i = element.index
-            varStr    = "question" + unicode(i)
-            keyStr    = "key" + unicode(i)
+            varStr    = "question" + unicode(i) + str(numQ)
+            keyStr    = "key" + unicode(i) + str(numQ)
             quesId    = "key" + unicode(element.index) + "b" + self.id
             numOption = element.getNumOption()
-            answers  += "var key"  + unicode(i) + " = "
+            answers  += "var key"  + unicode(i) +  str(numQ)  + " = "
             answers  += unicode(element.question.correctAns) + ";\n"
-            getEle    = 'document.getElementById("quizForm%s")' % \
-                        self.idevice.id
+            getEle    = 'document.getElementById("quizForm%s")' %self.idevice.id
             chk       = '%s.%s[i].checked'% (getEle, quesId)
             value     = '%s.%s[i].value' % (getEle, quesId)
             varStrs += "var " + varStr + ";\n"
-            keyStrs += "var key" + unicode(i)+ " = "
+            keyStrs += "var key" + unicode(i) + str(numQ) + " = "
             keyStrs += unicode(element.question.correctAns) + ";\n"          
             answerStr += """
             scorm.SetInteractionValue("cmi.interactions.%s.id","%s");
@@ -284,17 +284,17 @@ class QuizTestBlock(Block):
                   break;
                }
             }
-           """ % (numOption, chk, varStr, value, unicode(i), varStr)           
+           """ % (numOption, chk, varStr, value, unicode(i), varStr)
             rawScoreStr += """
             if (%s == %s)
             {
                scorm.SetInteractionValue("cmi.interactions.%s.result","correct");
-               rawScore++;
+               rawScore%s++;
             }
             else
             {
                scorm.SetInteractionValue("cmi.interactions.%s.result","wrong");
-            }""" % (varStr, keyStr, unicode(i), unicode(i))
+            }""" % (varStr , keyStr, unicode(i), numQ, unicode(i))
            
         scriptStr += varStrs      
         scriptStr += keyStrs
@@ -303,45 +303,48 @@ class QuizTestBlock(Block):
         scriptStr += """
         }
        
-        function calcScore2()
+        function calcScore2%s()
         {
            computeTime();  // the student has stopped here.
-       """
+       """%numQ
         scriptStr += """
            document.getElementById("quizForm%s").submitB.disabled = true;
        """ % (self.idevice.id)
         scriptStr += """
-           getAnswer();
+           getAnswer%s();
     
-           calcRawScore();
+           calcRawScore%s();
           
-           actualScore = Math.round(rawScore / numQuestions * 100);
-        """
+           actualScore%s = Math.round(rawScore%s / numQuestions%s * 100);
+        """%(numQ, numQ, numQ, numQ, numQ)
 
         scriptStr += '''\n
         submsg = "";
                 
-                if (actualScore < %s){
+                if (actualScore%s < %s){
                 submsg += ", Pass rate is %s, You Fail the Quzi";
                 }
                 else{
                 submsg += ", You pass the Quiz";
                 }
-               ''' % (self.idevice.passRate, self.idevice.passRate)
+               ''' % (numQ, self.idevice.passRate, self.idevice.passRate)
 
+        tempnum =   'actualScore%s'%(numQ)
 
         scriptStr += '            var msg_str ="' + c_("Your score is %d%%") + '";'
-        scriptStr += '            alert(msg_str.replace("%d",actualScore).replace("%%","%") + submsg);'
+        scriptStr += '            alert(msg_str.replace("%d",' +tempnum+').replace("%%","%") + submsg);'
 
-        scriptStr += """  
+        if (thisnode.isQuizzPass==numQ):
+
+            scriptStr += """  
           
-           scorm.SetScoreRaw(actualScore+"" );
+           scorm.SetScoreRaw(actualScore%s+"" );
            scorm.SetScoreMax("100");
           
            var mode = scorm.GetMode();
 
                if ( mode != "review"  &&  mode != "browse" ){
-                 if ( actualScore < %s )
+                 if ( actualScore%s < %s )
                  {
                    scorm.SetCompletionStatus("incomplete");
                    scorm.SetSuccessStatus("failed");
@@ -355,16 +358,17 @@ class QuizTestBlock(Block):
                  scorm.SetExit("");
                  }
 
-         exitPageStatus = true;
+         exitPageStatus = true;""" % (numQ, numQ, self.idevice.passRate)
+
     
     
-         scorm.save();
+        scriptStr +="""scorm.save();
     
          scorm.quit();
          
         }
 //]]> -->
-</script>\n""" % self.idevice.passRate
+</script>\n"""
 
         return scriptStr
 

@@ -159,6 +159,8 @@ class ScormPage(Page):
         html += u'</'+headerTag+'>'+lb
 
         self.node.exportType = 'scorm'
+        #minh
+        numquiz = 0
         
         for idevice in self.node.idevices:
             if idevice.klass != 'NotaIdevice':
@@ -171,9 +173,10 @@ class ScormPage(Page):
                     log.critical("Unable to render iDevice.")
                     raise Error("Unable to render iDevice.")
                 if hasattr(idevice, "isQuiz"):
-                    html += block.renderJavascriptForScorm()
+                    numquiz+=1
+                    html += block.renderJavascriptForScorm(thisnode = self.node, numQ = numquiz)
                 html += self.processInternalLinks(
-                    block.renderView(self.node.package.style))
+                    block.renderView(self.node.package.style, numQ = numquiz))
                 html += u'</'+articleTag+'>'+lb # iDevice div
 
         html += u"</"+sectionTag+">"+lb # /#main

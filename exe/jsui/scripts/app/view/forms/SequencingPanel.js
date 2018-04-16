@@ -36,6 +36,8 @@ Ext.define('eXe.view.forms.SequencingPanel', {
         var me = this;
 
         var seqTarget = null;
+
+
         Ext.applyIf(me, {
             autoScroll: true,
             trackResetOnLoad: true,
@@ -86,7 +88,14 @@ Ext.define('eXe.view.forms.SequencingPanel', {
                         var targetRecord = Ext.getCmp('seqTarget').findRecordByValue(targetID),
                         index = Ext.getCmp('seqTarget').getStore().indexOf(targetRecord);
                         var studyTimer = Ext.getCmp('stuTimer').getValue();
-                        var isQuizPass = Ext.getCmp('isQuizz').getValue();
+                        for (j = 1; j<=10;j++){
+                            var box_id = j.toString() + "Quiz";
+                            if(Ext.getCmp(box_id)){
+                                var isQuizPass = j;
+                            }
+                        }
+
+                        //var isQuizPass = Ext.getCmp('isQuizz').getValue();
 
                             scope: this,
                             nodeid = '0';
@@ -95,7 +104,7 @@ Ext.define('eXe.view.forms.SequencingPanel', {
     		                nodeid = selected[0].data.id;
     	                index = (index ==-1)?0:index;
                         studyTimer = (studyTimer=="")?"0":studyTimer;
-                        isQuizPassstr = (isQuizPass)?'true':'false';
+                        isQuizPassstr = (isQuizPass != 0)?isQuizPass:0;
                         form.submit({
                             success: function () {
                                 if (nodeid == index){
@@ -121,6 +130,7 @@ Ext.define('eXe.view.forms.SequencingPanel', {
                 },
 				]
             }]
+
         });
 
         me.callParent(arguments);
