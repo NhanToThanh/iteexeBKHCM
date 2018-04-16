@@ -117,14 +117,26 @@ class OutlinePane(Renderable, Resource):
 
         tempnode = nodeId
         stuTimer = int(studyTimer)
-
+        quizNum = isQuiz.replace(',','')
+        #First char mean mode(0 mode SOME, 1 mode ANY, 2 mode no Quiz)
+        #second char -> end: the quiz num to pass
+        #
         targetnodeId = unicode('')
         targetNodeIndex = unicode(targetIndex)
         currNode = self.package.findNode(nodeId)
         currNode.idTarget = targetNodeIndex
         currNode.sTimer = stuTimer
 
-        currNode.isQuizzPass = int(isQuiz)
+        currNode.passMode = int(quizNum[0])
+        if int(quizNum[0])==0:
+            for i in range(1, len(quizNum)):
+                if(int(quizNum[i])==1):
+                    currNode.quiztoPass.append(i)
+        elif int(quizNum[0])==1:
+            currNode.quiztoPass = []
+        else:
+            currNode.quiztoPass = []
+
         client.sendScript('eXe.app.getController("Outline").reload()', filter_func=allSessionPackageClients)
         client.call('eXe.app.getController("Outline").loadNodeOnAuthoringPage', client.currentNodeId)
 

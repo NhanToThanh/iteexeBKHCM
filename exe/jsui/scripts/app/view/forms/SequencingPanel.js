@@ -88,30 +88,50 @@ Ext.define('eXe.view.forms.SequencingPanel', {
                         var targetRecord = Ext.getCmp('seqTarget').findRecordByValue(targetID),
                         index = Ext.getCmp('seqTarget').getStore().indexOf(targetRecord);
                         var studyTimer = Ext.getCmp('stuTimer').getValue();
-                        for (j = 1; j<=10;j++){
+
+                        var quizArray = [];
+                        if(Ext.getCmp('anycon')){
+                           if (Ext.getCmp('anycon').getValue()){
+                            quizArray[0] = 1;
+                        }else{
+                            quizArray[0] =0;
+                            for (j = 1; j<=10;j++){
                             var box_id = j.toString() + "Quiz";
                             if(Ext.getCmp(box_id)){
-                                var isQuizPass = j;
+                                if(Ext.getCmp(box_id).getValue()){
+                                quizArray[j] = 1;
+                            }else{
+                                quizArray[j] = 0;
                             }
+                            }else{
+                                break;
+                            }
+
                         }
+
+                        }
+                        }
+                        else{
+                            quizArray[0] = 2;
+                        }
+
 
                         //var isQuizPass = Ext.getCmp('isQuizz').getValue();
 
-                            scope: this,
-                            nodeid = '0';
+                         var  nodeid = '0';
 
     	                if (selected != 0)
     		                nodeid = selected[0].data.id;
     	                index = (index ==-1)?0:index;
                         studyTimer = (studyTimer=="")?"0":studyTimer;
-                        isQuizPassstr = (isQuizPass != 0)?isQuizPass:0;
+                        //isQuizPassstr = (isQuizPass != 0)?isQuizPass:0;
                         form.submit({
                             success: function () {
                                 if (nodeid == index){
                                     Ext.Msg.alert('Seclect another target','PLease selected another target node!');
                                 }
                                 else{
-                                    nevow_clientToServerEvent('AddTarget',this, '', nodeid, index, studyTimer, isQuizPassstr);
+                                    nevow_clientToServerEvent('AddTarget',this, '', nodeid, index, studyTimer, quizArray);
 
                                     Ext.getCmp('sequencingwin').doClose();
 

@@ -61,7 +61,8 @@ class Node(Persistable):
         # Add Target ID for each node
         self.idTarget = package.regTargetNode(self)
         self.sTimer = 0
-        self.isQuizzPass = 0
+        self.passMode = 0
+        self.quiztoPass = []
         self.parent = parent
         self._title = title
         self.children = []

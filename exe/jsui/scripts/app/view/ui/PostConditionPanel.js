@@ -52,7 +52,7 @@ Ext.define('eXe.view.ui.PostConditionPanel', {
 
             if (selected1 != 0)
                 var nodeid = selected1[0].data.id;
-
+            var numQuizz = 0;
             store.each(function(records){
                 //var nodeidd = nodeid;
                 if (nodeid == records.index){
@@ -60,6 +60,7 @@ Ext.define('eXe.view.ui.PostConditionPanel', {
                     if(texrStr.indexOf('Quiz') !== -1){
 
                         var unQuizz = parseInt(texrStr.charAt(texrStr.indexOf("Quiz")-2));
+                        numQuizz = unQuizz;
                         for(i = 1; i<=unQuizz;i++){
                             var boxlab = "Pass the " + i.toString() + " Quiz";
                             var boxid  = i.toString() + "Quiz";
@@ -75,6 +76,35 @@ Ext.define('eXe.view.ui.PostConditionPanel', {
                     }
                 }
             }); // end store.each
+
+            if (numQuizz != 0){
+            var anycon = {
+                xtype: 'checkbox',
+                boxLabel: 'Pass any Quiz', // field from store
+                id: 'anycon',   // field from store
+                toggleGroup: 'combostore',
+                margin: '0 5 3 5',
+                listeners: {
+                    change: {
+                        fn: function () {
+                            if (Ext.getCmp('anycon').getValue()) {
+                                for (i = 1; i <= numQuizz; i++) {
+                                    var checkedName = i.toString() + "Quiz";
+                                    Ext.getCmp(checkedName).disable();
+                                }
+                            } else {
+                                for (i = 1; i <= numQuizz; i++) {
+                                    var checkedName = i.toString() + "Quiz";
+                                    Ext.getCmp(checkedName).enable();
+                                }
+
+                            }
+                        }
+                    }
+                }
+            };
+            checkboxs.push(anycon);
+        }
 
             var content = {
                 title: 'Timmer and sequencing',
