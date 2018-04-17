@@ -245,6 +245,8 @@ class QuizTestBlock(Block):
         scriptStr += unicode(len(self.questionElements))+";\n"
         scriptStr += "var rawScore" + str(numQ) +" = 0;\n"
         scriptStr += "var actualScore" + str(numQ) +" = 0;\n"
+        scriptStr += "var passMode = " + str(thisnode.passMode) +";\n"
+        scriptStr += "var passQuiz"+str(numQ)+" = false;\n"
         answerStr  = """function getAnswer%s()
         {"""%numQ
         varStrs     = ""
@@ -323,50 +325,76 @@ class QuizTestBlock(Block):
                 
                 if (actualScore%s < %s){
                 submsg += ", Pass rate is %s, You Fail the Quzi";
+                passQuiz%s = false;
                 }
                 else{
                 submsg += ", You pass the Quiz";
+                passQuiz%s = true;
                 }
-               ''' % (numQ, self.idevice.passRate, self.idevice.passRate)
+               ''' % (numQ, self.idevice.passRate, self.idevice.passRate, numQ, numQ)
 
         tempnum =   'actualScore%s'%(numQ)
 
-        scriptStr += '            var msg_str ="' + c_("Your score is %d%%") + '";'
-        scriptStr += '            alert(msg_str.replace("%d",' +tempnum+').replace("%%","%") + submsg);'
+        scriptStr += 'var msg_str ="' + c_("Your score is %d%%") + '";\n'
+        scriptStr += ' alert(msg_str.replace("%d",' +tempnum+').replace("%%","%") + submsg);\n'
 
-        if (thisnode.isQuizzPass==numQ):
 
-            scriptStr += """  
-          
-           scorm.SetScoreRaw(actualScore%s+"" );
-           scorm.SetScoreMax("100");
-          
-           var mode = scorm.GetMode();
+        scriptStr +="""calPass();\n
+        
+        }"""
 
-               if ( mode != "review"  &&  mode != "browse" ){
-                 if ( actualScore%s < %s )
-                 {
-                   scorm.SetCompletionStatus("incomplete");
-                   scorm.SetSuccessStatus("failed");
-                 }
-                 else
-                 {
-                   scorm.SetCompletionStatus("completed");
-                   scorm.SetSuccessStatus("passed");
-                 }
+        andCon = ""
+        orCon =  ""
+        for i in range(len(thisnode.quiztoPass)):
+            if i== len(thisnode.quiztoPass)-1:
+                orCon += "passQuiz%s"%thisnode.quiztoPass[i]
+                andCon += "passQuiz%s"%thisnode.quiztoPass[i]
+            else:
+                orCon += "passQuiz%s"%thisnode.quiztoPass[i] + "|| "
+                andCon += "passQuiz%s"%thisnode.quiztoPass[i] + "& "
 
-                 scorm.SetExit("");
-                 }
-
-         exitPageStatus = true;""" % (numQ, numQ, self.idevice.passRate)
-
+        if thisnode.passMode == 0:
+            scriptStr+="""
+            function calPass(){
+    if(passMode == 0){//mode Some
+ 
+      if(%s){
+          scorm.SetCompletionStatus("completed");
+          scorm.SetSuccessStatus("passed");
+          scorm.SetExit("");
+          exitPageStatus = true;
+          scorm.save();
+          scorm.quit();
+        }}}
+            """%andCon
+        elif thisnode.passMode == 1:
+            scriptStr+="""
+  function calPass(){
+    if(passMode == 1){//mode ANY
+      if(%s){
+        scorm.SetCompletionStatus("completed");
+        scorm.SetSuccessStatus("passed");
+        scorm.SetExit("");
+        exitPageStatus = true;
+        scorm.save();
+        scorm.quit();
+      }}}\n"""%orCon
+        else:
+            scriptStr+="""
+            function calPass(){
+    if(passMode == 2){//mode ANY
     
-    
-        scriptStr +="""scorm.save();
-    
-         scorm.quit();
-         
-        }
+        scorm.SetCompletionStatus("completed");
+        scorm.SetSuccessStatus("passed");
+        scorm.SetExit("");
+        exitPageStatus = true;
+        scorm.save();
+        scorm.quit();
+      }
+    }
+            """
+
+        scriptStr +="""
 //]]> -->
 </script>\n"""
 

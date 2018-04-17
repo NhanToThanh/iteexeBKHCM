@@ -93,6 +93,14 @@ Ext.define('eXe.view.forms.SequencingPanel', {
                         if(Ext.getCmp('anycon')){
                            if (Ext.getCmp('anycon').getValue()){
                             quizArray[0] = 1;
+                            for (j = 1; j<=10;j++){
+                            var box_id = j.toString() + "Quiz";
+                            if(Ext.getCmp(box_id)){
+                                quizArray[j] = 1;
+                            }else{
+                                break;
+                            }
+                        }
                         }else{
                             quizArray[0] =0;
                             for (j = 1; j<=10;j++){

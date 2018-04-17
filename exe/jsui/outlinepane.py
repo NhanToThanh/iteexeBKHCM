@@ -128,12 +128,10 @@ class OutlinePane(Renderable, Resource):
         currNode.sTimer = stuTimer
 
         currNode.passMode = int(quizNum[0])
-        if int(quizNum[0])==0:
+        if int(quizNum[0]) == 0 or int(quizNum[0]) == 1:
             for i in range(1, len(quizNum)):
                 if(int(quizNum[i])==1):
                     currNode.quiztoPass.append(i)
-        elif int(quizNum[0])==1:
-            currNode.quiztoPass = []
         else:
             currNode.quiztoPass = []
 
