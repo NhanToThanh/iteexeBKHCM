@@ -88,7 +88,7 @@ Ext.define('eXe.view.forms.SequencingPanel', {
                         var targetRecord = Ext.getCmp('seqTarget').findRecordByValue(targetID),
                         index = Ext.getCmp('seqTarget').getStore().indexOf(targetRecord);
                         var studyTimer = Ext.getCmp('stuTimer').getValue();
-
+                        var checkSome = false;
                         var quizArray = [];
                         if(Ext.getCmp('anycon')){
                            if (Ext.getCmp('anycon').getValue()){
@@ -102,7 +102,20 @@ Ext.define('eXe.view.forms.SequencingPanel', {
                             }
                         }
                         }else{
-                            quizArray[0] =0;
+                               //kiem tra dieu kien some
+                               for(k=1; k<10;k++){
+                                   var sbox_id = j.toString() + "Quiz";
+                            if(Ext.getCmp(sbox_id)){
+                                if(Ext.getCmp(sbox_id).getValue()){
+                                        checkSome = true;
+                                }
+                                }
+                                else{
+                                    break;
+                                }
+                               }
+                               if(checkSome){
+                                   quizArray[0] =0;
                             for (j = 1; j<=10;j++){
                             var box_id = j.toString() + "Quiz";
                             if(Ext.getCmp(box_id)){
@@ -114,8 +127,9 @@ Ext.define('eXe.view.forms.SequencingPanel', {
                             }else{
                                 break;
                             }
+                            }//for
 
-                        }
+                               }
 
                         }
                         }
