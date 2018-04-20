@@ -89,52 +89,55 @@ Ext.define('eXe.view.forms.SequencingPanel', {
                         index = Ext.getCmp('seqTarget').getStore().indexOf(targetRecord);
                         var studyTimer = Ext.getCmp('stuTimer').getValue();
                         var checkSome = false;
+                        var checkAny = false;
                         var quizArray = [];
                         if(Ext.getCmp('anycon')){
-                           if (Ext.getCmp('anycon').getValue()){
+                            checkAny = true;
+                            if(Ext.getCmp('anycon').getValue()){
                             quizArray[0] = 1;
                             for (j = 1; j<=10;j++){
                             var box_id = j.toString() + "Quiz";
-                            if(Ext.getCmp(box_id)){
+                            if(Ext.getCmp(box_id))
                                 quizArray[j] = 1;
-                            }else{
+                            else
                                 break;
+
                             }
-                        }
-                        }else{
-                               //kiem tra dieu kien some
-                               for(k=1; k<10;k++){
+                            }else{
+                                //kiem tra dieu kien some
+                                for(k=1; k<10;k++){
                                    var sbox_id = j.toString() + "Quiz";
-                            if(Ext.getCmp(sbox_id)){
-                                if(Ext.getCmp(sbox_id).getValue()){
-                                        checkSome = true;
-                                }
-                                }
-                                else{
-                                    break;
-                                }
-                               }
+                                    if(Ext.getCmp(sbox_id)){
+                                        if(Ext.getCmp(sbox_id).getValue())
+                                            checkSome = true;
+                                        }
+                                    else
+                                        break;
+
+                               }// end checkSome
+
                                if(checkSome){
                                    quizArray[0] =0;
-                            for (j = 1; j<=10;j++){
-                            var box_id = j.toString() + "Quiz";
-                            if(Ext.getCmp(box_id)){
-                                if(Ext.getCmp(box_id).getValue()){
-                                quizArray[j] = 1;
-                            }else{
-                                quizArray[j] = 0;
-                            }
-                            }else{
-                                break;
-                            }
-                            }//for
+                                    for (j = 1; j<=10;j++){
+                                    var box_id = j.toString() + "Quiz";
+                                    if(Ext.getCmp(box_id)){
+                                        if(Ext.getCmp(box_id).getValue()){
+                                        quizArray[j] = 1;
+                                        }else
+                                        quizArray[j] = 0;
 
+                                    }else
+                                         break;
+                                    }//for
                                }
 
-                        }
+                            }
                         }
                         else{
-                            quizArray[0] = 2;
+                            if(!checkAny)
+                                quizArray[0] = 3;
+                            else
+                                quizArray[0] = 2;
                         }
 
 
