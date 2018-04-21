@@ -303,7 +303,7 @@ class Block(Renderable):
         return html
 
     
-    def renderView(self, style):
+    def renderView(self, style, preview=False, numQ = None):
         """
         Returns an XHTML string for viewing this block, 
         i.e. when exported as a webpage or SCORM package

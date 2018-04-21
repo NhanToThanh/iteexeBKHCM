@@ -199,8 +199,8 @@ class ListaElement(ElementWithResources):
     
     
     
-    def renderView(self, feedbackId=None, preview=False):
-        
+    #def renderView(self, feedbackId=None, preview=False):
+    def renderView(self, feedbackId=None, preview=False, numQ=None):
         # Shows the text with inputs for the missing parts
        
         dT = common.getExportDocType()

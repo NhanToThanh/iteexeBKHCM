@@ -74,7 +74,7 @@ class DestacadofpdBlock(Block):
         self.previewing = True 
         return Block.renderPreview(self, style)
 
-    def renderView(self, style): 
+    def renderView(self, style, preview=False, numQ = None):
         """ 
         Remembers if we're previewing or not, 
         then implicitly calls self.renderViewContent (via Block.renderPreview) 

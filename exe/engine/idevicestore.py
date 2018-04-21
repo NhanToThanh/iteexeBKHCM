@@ -156,7 +156,7 @@ class IdeviceStore:
     def register(self, listener):
         """
         Register a listener who is interested in changes to the
-        IdeviceStore.  
+        IdeviceStore.
         Created for IdevicePanes, but could be used by other objects
         """
         self.listeners.append(listener)
@@ -209,10 +209,13 @@ class IdeviceStore:
         if not idevicesDir.exists():
             idevicesDir.mkdir()
         self.__loadExtended()
+        #a = self.getFactoryIdevices()
         self.__loadGeneric()
+        #b = self.getFactoryIdevices()
         for idevice in self.getFactoryIdevices():
             idevice.id = self.getNewIdeviceId()
-
+        #c = self.getFactoryIdevices()
+        #d =  self.factoryiDevices
         for idevice in self.extended:
             for factoryiDevice in self.factoryiDevices:
                 if factoryiDevice._title == idevice._title:
@@ -307,6 +310,7 @@ class IdeviceStore:
         from exe.engine.appletidevice import AppletIdevice
         from exe.engine.flashmovieidevice import FlashMovieIdevice
         from exe.engine.quiztestidevice import QuizTestIdevice
+        from exe.engine.quiztestidevice2 import QuizTestIdevice2
         from exe.engine.listaidevice import ListaIdevice
         from exe.engine.notaidevice import NotaIdevice
         from exe.engine.sortidevice import SortIdeviceInc
@@ -382,6 +386,7 @@ class IdeviceStore:
         # (we eliminate this iDevice from the extended ones)
         #factoryExtendedIdevices.append(FlashMovieIdevice())
         factoryExtendedIdevices.append(QuizTestIdevice())
+        factoryExtendedIdevices.append(QuizTestIdevice2())
         factoryExtendedIdevices.append(ListaIdevice())
         factoryExtendedIdevices.append(NotaIdevice())
         # JRJ

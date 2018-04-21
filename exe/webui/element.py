@@ -511,7 +511,7 @@ class FeedbackElement(ElementWithResources):
                                 self.field.feedback)
         return html
 
-    def renderView(self):
+    def renderView(self, style, preview=False, numQ = None):
         """
         Returns an XHTML string for viewing this question element
         """

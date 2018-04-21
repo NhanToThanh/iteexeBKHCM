@@ -127,7 +127,7 @@ class QuizTestBlock(Block):
 
         return html
 
-    def renderView(self, style, preview=False, numQ = None):
+    def renderView(self, style, preview=False, numQ=None):
         """
         Returns an XHTML string for viewing this block
         """
@@ -147,7 +147,6 @@ class QuizTestBlock(Block):
         html += '<div id="quizFormScore'+self.id+'"></div>'+lb
         html += '</form>'+lb
         html += common.ideviceFooter(self, style, "view")
-
         return html
 
     def renderJavascriptForWeb(self):

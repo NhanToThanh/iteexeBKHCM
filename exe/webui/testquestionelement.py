@@ -23,9 +23,9 @@ Used by QuizTestBlock for SCORM Quiz
 """
 
 import logging
-from exe.webui.testoptionelement   import TestoptionElement
-from exe.webui                     import common
-from exe.webui.element   import TextAreaElement
+from exe.webui.testoptionelement import TestoptionElement
+from exe.webui import common
+from exe.webui.element import TextAreaElement
 
 log = logging.getLogger(__name__)
 
@@ -38,31 +38,32 @@ class TestquestionElement(object):
     == SCORM Quiz Testquestion, 
     pretty much the same as MultiSelect's SelectquestionElement
     """
+
     def __init__(self, index, idevice, question):
         """
         Initialize
         """
-        self.index      = index
-        self.id         = unicode(index) + "b" + idevice.id        
-        self.idevice    = idevice
+        self.index = index
+        self.id = unicode(index) + "b" + idevice.id
+        self.idevice = idevice
 
         # to compensate for the strange unpickling timing when objects are 
         # loaded from an elp, ensure that proper idevices are set:
-        if question.questionTextArea.idevice is None: 
+        if question.questionTextArea.idevice is None:
             question.questionTextArea.idevice = idevice
         self.questionElement = TextAreaElement(question.questionTextArea)
-        self.question   = question
+        self.question = question
 
-        self.questionId = "question"+self.id
+        self.questionId = "question" + self.id
         self.questionElement.id = self.questionId
 
-        self.options    = []
-        self.keyId      = "key" + self.id
+        self.options = []
+        self.keyId = "key" + self.id
         i = 0
         for option in question.options:
             self.options.append(TestoptionElement(i,
-                                                  question, 
-                                                  self.id, 
+                                                  question,
+                                                  self.id,
                                                   option,
                                                   idevice))
             i += 1
@@ -72,36 +73,35 @@ class TestquestionElement(object):
         Process the request arguments from the web server
         """
         log.info("process " + repr(request.args))
-        if self.questionId in request.args: 
+        if self.questionId in request.args:
             self.questionElement.process(request)
-            
-        if ("addOption"+unicode(self.id)) in request.args: 
+
+        if ("addOption" + unicode(self.id)) in request.args:
             self.question.addOption()
             self.idevice.edit = True
-            # disable Undo once an option has been added: 
+            # disable Undo once an option has been added:
             self.idevice.undo = False
-            
+
         if "action" in request.args and request.args["action"][0] == self.id:
             # before deleting the question object, remove any internal anchors:
             for q_field in self.question.getRichTextFields():
-                 q_field.ReplaceAllInternalAnchorsLinks()  
-                 q_field.RemoveAllInternalLinks()  
+                q_field.ReplaceAllInternalAnchorsLinks()
+                q_field.RemoveAllInternalLinks()
             self.idevice.questions.remove(self.question)
-            # disable Undo once a question has been deleted: 
+            # disable Undo once a question has been deleted:
             self.idevice.undo = False
 
         for element in self.options:
             element.process(request)
 
-
     def renderEdit(self):
         """
         Returns an XHTML string with the form element for editing this element
         """
-        html  = u"<div class=\"iDevice\">\n"
-        html += common.submitImage(self.id, self.idevice.id,  
-                "/images/stock-cancel.png", 
-                _("Delete question")) 
+        html = u"<div class=\"iDevice\">\n"
+        html += common.submitImage(self.id, self.idevice.id,
+                                   "/images/stock-cancel.png",
+                                   _("Delete question"))
         html += self.questionElement.renderEdit()
 
         html += u"<table width =\"100%%\">"
@@ -115,18 +115,17 @@ class TestquestionElement(object):
         html += u"<tbody>"
 
         for element in self.options:
-            html += element.renderEdit() 
-            
+            html += element.renderEdit()
+
         html += u"</tbody>"
         html += u"</table>\n"
-        value = _(u"Add another Option")    
-        html += common.submitButton("addOption"+unicode(self.id), value)
+        value = _(u"Add another Option")
+        html += common.submitButton("addOption" + unicode(self.id), value)
         html += u"<br />"
         html += u"</div>\n"
 
         return html
 
-    
     def renderPreview(self):
         """
         Returns an XHTML string for previewing this element
@@ -137,7 +136,7 @@ class TestquestionElement(object):
         """
         Returns an XHTML string for viewing this element
         """
-        lb = "\n" #Line breaks
+        lb = "\n"  # Line breaks
         dT = common.getExportDocType()
         sectionTag = "div"
         titleTag1 = "h3"
@@ -145,41 +144,38 @@ class TestquestionElement(object):
         if dT == "HTML5":
             sectionTag = "section"
             titleTag1 = "h1"
-            titleTag2 = "h1"        
-        html  = ''
-        html += '<'+sectionTag+' class="question">'+lb
-        html += '<'+titleTag1+' class="js-sr-av">' + c_("Question")+'</'+titleTag1+'>'+lb        
-        if preview: 
+            titleTag2 = "h1"
+        html = ''
+        html += '<' + sectionTag + ' class="question">' + lb
+        html += '<' + titleTag1 + ' class="js-sr-av">' + c_("Question") + '</' + titleTag1 + '>' + lb
+        if preview:
             html += self.questionElement.renderPreview()
         else:
             html += self.questionElement.renderView()
         # Answers
-        html += '<'+sectionTag+' class="iDevice_answers">'+lb
-        html += '<'+titleTag2+' class="js-sr-av">' + c_("Answers")+'</'+titleTag2+'>'+lb        
+        html += '<' + sectionTag + ' class="iDevice_answers">' + lb
+        html += '<' + titleTag2 + ' class="js-sr-av">' + c_("Answers") + '</' + titleTag2 + '>' + lb
         for element in self.options:
-            if preview: 
-                html += element.renderPreview()      
+            if preview:
+                html += element.renderPreview()
             else:
-                html += element.renderView()      
-        html += "</"+sectionTag+">"+lb
-        
-        html += "</"+sectionTag+">"+lb
-        
+                html += element.renderView()
+        html += "</" + sectionTag + ">" + lb
+
+        html += "</" + sectionTag + ">" + lb
+
         return html
-    
-    
+
     def getCorrectAns(self):
         """
         return the correct answer for the question
         """
         return self.question.correctAns
 
-    
     def getNumOption(self):
         """
         return the number of options
         """
         return len(self.question.options)
-
 
 # ===========================================================================

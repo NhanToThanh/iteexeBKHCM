@@ -50,6 +50,7 @@ class IdevicePane(Renderable, Resource):
         self.prototypes = {}
         self.translateOldHidingIdevicesMechanism()
         self.ideviceStore.register(self)
+        #e = self.ideviceStore.getIdevices()
         for prototype in self.ideviceStore.getIdevices():
             log.debug("add " + prototype.title)
             if prototype.id in self.prototypes:

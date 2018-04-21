@@ -248,11 +248,12 @@ the learners knowledge on a topic without providing the learner with feedback
 to the correct answer. The quiz will often be given once the learner has had 
 time to learn and practice using the information or skill.
  """), u"", "question")
-        self.isQuiz     = True
+        self.isQuiz    = True
         self.emphasis   = Idevice.SomeEmphasis
-        self.score      = -1 
+        self.emphasis   = Idevice.SomeEmphasis
+        self.score      = -1
         self.isAnswered = True
-        self.passRate   = "50"
+        self.passRate   = "70"
         self.questions  = []
         self.addQuestion()
         self.systemResources += ["common.js"]

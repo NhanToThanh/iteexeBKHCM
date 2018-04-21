@@ -141,7 +141,7 @@ class QuestionElement(object):
         
         return html
 
-    def renderView(self):
+    def renderView(self, preview=False, numQ = None):
         """
         Returns an XHTML string for viewing this question element
         """

@@ -38,6 +38,7 @@ from exe.engine.node import Node
 from exe.engine.genericidevice import GenericIdevice
 from exe.engine.multichoiceidevice import MultichoiceIdevice
 from exe.engine.quiztestidevice import QuizTestIdevice
+from exe.engine.quiztestidevice2 import QuizTestIdevice2
 from exe.engine.truefalseidevice import TrueFalseIdevice
 from exe.engine.wikipediaidevice import WikipediaIdevice
 from exe.engine.casestudyidevice import CasestudyIdevice
@@ -165,6 +166,8 @@ def loadNodesIdevices(node, s):
                     idevice = burstIdevice('Multi-select', i, node)
                 elif i.attrMap['class'] == "QuizTestIdevice":
                     idevice = burstIdevice('SCORM Quiz', i, node)
+                elif i.attrMap['class'] == "QuizTestIdevice2":
+                    idevice = burstIdevice('SCORM Quiz 2', i, node)
                 elif i.attrMap['class'] == "TrueFalseIdevice":
                     idevice = burstIdevice('True-False Question', i, node)
                 else:
@@ -1170,6 +1173,9 @@ class Package(Persistable):
             OrientacionestutoriafpdIdevice.persistenceVersion = 9
             ParasabermasfpdIdevice.persistenceVersion = 9
             QuizTestIdevice.persistenceVersion = 10
+
+            QuizTestIdevice2.persistenceVersion = 10
+
             RecomendacionfpdIdevice.persistenceVersion = 9
             ReflectionfpdIdevice.persistenceVersion = 9
             ReflectionfpdmodifIdevice.persistenceVersion = 9
@@ -1789,6 +1795,7 @@ class Package(Persistable):
         OrientacionestutoriafpdIdevice.persistenceVersion = 7
         ParasabermasfpdIdevice.persistenceVersion = 7
         QuizTestIdevice.persistenceVersion = 8
+        QuizTestIdevice2.persistenceVersion = 8
         RecomendacionfpdIdevice.persistenceVersion = 7
         ReflectionfpdIdevice.persistenceVersion = 7
         ReflectionfpdmodifIdevice.persistenceVersion = 7

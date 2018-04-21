@@ -37,9 +37,15 @@ class ScormPage(Page):
         ext = 'html'
         if G.application.config.cutFileName == "1":
             ext = 'htm'
+        html, questions = self.render()
         out = open(outputDir/self.name + '.' + ext, "wb")
-        out.write(self.render())
+        out2 = open(outputDir / 'questions.js', "wb")
+
+        out.write(html)
+        out2.write(questions)
+
         out.close()
+        out2.close()
 
 
     def render(self):
@@ -137,8 +143,6 @@ class ScormPage(Page):
             html += u"<script type=\"text/javascript\" src=\"SCORM_API_wrapper.js\"></script>"+lb
             html += u"<script type=\"text/javascript\" src=\"timer.js\"></script>" + lb
             html += u"<script type=\"text/javascript\" src=\"SCOFunctions.js\"></script>"+lb
-            #if self.node.isQuizzPass:
-            #    html += u'<script type="text/javascript">alert("This page have Quiz MUST Pass");</script>\n'
             if style.hasValidConfig:
                 html += style.get_extra_head()
             html += u"</head>"+lb            
@@ -161,6 +165,7 @@ class ScormPage(Page):
         self.node.exportType = 'scorm'
         #minh
         numquiz = 0
+        checkTest = False
         
         for idevice in self.node.idevices:
             if idevice.klass != 'NotaIdevice':
@@ -174,6 +179,11 @@ class ScormPage(Page):
                     raise Error("Unable to render iDevice.")
                 if hasattr(idevice, "isQuiz"):
                     numquiz+=1
+                    html += block.renderJavascriptForScorm(thisnode = self.node, numQ = numquiz)
+                if hasattr(idevice, "isTest"):
+                    checkTest = True
+                    numquiz+=1
+                    questionStringtoFile = self.renderQuestionsStr(block.idevice.questions)
                     html += block.renderJavascriptForScorm(thisnode = self.node, numQ = numquiz)
                 html += self.processInternalLinks(
                     block.renderView(self.node.package.style, numQ = numquiz))
@@ -212,8 +222,52 @@ class ScormPage(Page):
         html = html.replace("application/x-mplayer2\" data=\"resources/", "application/x-mplayer2\" data=\"")
         html = html.replace("audio/x-pn-realaudio-plugin\" data=\"resources/", "audio/x-pn-realaudio-plugin\" data=\"")
         html = html.replace("<param name=\"url\" value=\"resources/", "<param name=\"url\" value=\"")
-        return html
 
+        if checkTest:
+            return html, questionStringtoFile
+        else:
+            return html, "False"
+
+        #return html
+
+    def renderQuestionsStr(self, questions):
+        mainquesStr = u""
+        #questjs = u"test.AddQuestion( new Question (%s,\n %s, \n QUESTION_TYPE_CHOICE,\n new Array(%s),\n %s,%s));\n"
+        i = 0;
+        for question in questions:
+            i += 1;
+            questsID = u"question_" + unicode(i)
+            objID = u"obj_" + unicode(i)
+            questjs = u'test.AddQuestion( new Question ("%s",\n "%s", \n QUESTION_TYPE_CHOICE,\n new Array(%s),\n "%s","%s"));\n'%(questsID, question.questionTextArea.content[3:len(question.questionTextArea.content)-4], self.renderOptStr(question.options), self.renderCorect(question.options), objID)
+            mainquesStr += questjs
+        return mainquesStr
+
+    def renderOptStr(self, options):
+        optlist = []
+        #optStr = u""
+        write = ""
+        for option in options:
+            if "<p>" in option.answerTextArea.content:
+                if "<span>" in option.answerTextArea.content:
+                    write = option.answerTextArea.content[9:len(option.answerTextArea.content)-11]
+                else:
+                    write = option.answerTextArea.content[3:len(option.answerTextArea.content)-4]
+            item = u'"'+ write+ u'"'
+            optlist.append(item)
+        optStr = " ,".join(optlist)
+        return optStr
+
+    def renderCorect(self, options):
+        corOpt = u""
+        for option in options:
+            if option.isCorrect:
+                if "<p>" in option.answerTextArea.content:
+                    if "<span>" in option.answerTextArea.content:
+                        corOpt = option.answerTextArea.content[9:len(option.answerTextArea.content) - 11]
+                    else:
+                        corOpt = option.answerTextArea.content[3:len(option.answerTextArea.content) - 4]
+
+        return corOpt
 
     def processInternalLinks(self, html):
         """

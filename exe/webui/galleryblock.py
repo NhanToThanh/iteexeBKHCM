@@ -357,7 +357,7 @@ class GalleryBlock(Block):
         cls.preview()
         return Block.renderPreview(self, style)
         
-    def renderView(self, style):
+    def renderView(self, style, preview=False, numQ = None):
         """
         Renders the html for export
         """

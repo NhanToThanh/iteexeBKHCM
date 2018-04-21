@@ -95,7 +95,7 @@ class FreeTextBlock(Block):
         return html
 
 
-    def renderView(self, style):
+    def renderView(self, style, preview=False, numQ = None):
         """
         Returns an XHTML string for viewing this block
         """
