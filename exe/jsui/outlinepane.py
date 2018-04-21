@@ -126,6 +126,7 @@ class OutlinePane(Renderable, Resource):
         currNode = self.package.findNode(nodeId)
         currNode.idTarget = targetNodeIndex
         currNode.sTimer = stuTimer
+        currNode.quiztoPass = []
 
         currNode.passMode = int(quizNum[0])
         if int(quizNum[0]) == 0 or int(quizNum[0]) == 1:

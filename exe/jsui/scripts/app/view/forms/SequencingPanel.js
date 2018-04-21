@@ -92,8 +92,9 @@ Ext.define('eXe.view.forms.SequencingPanel', {
                         var checkAny = false;
                         var quizArray = [];
                         if(Ext.getCmp('anycon')){
-                            checkAny = true;
+                            //checkAny = true;
                             if(Ext.getCmp('anycon').getValue()){
+                            checkAny = true;
                             quizArray[0] = 1;
                             for (j = 1; j<=10;j++){
                             var box_id = j.toString() + "Quiz";
@@ -106,7 +107,7 @@ Ext.define('eXe.view.forms.SequencingPanel', {
                             }else{
                                 //kiem tra dieu kien some
                                 for(k=1; k<10;k++){
-                                   var sbox_id = j.toString() + "Quiz";
+                                   var sbox_id = k.toString() + "Quiz";
                                     if(Ext.getCmp(sbox_id)){
                                         if(Ext.getCmp(sbox_id).getValue())
                                             checkSome = true;
