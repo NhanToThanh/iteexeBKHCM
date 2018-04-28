@@ -116,6 +116,8 @@ class TestQuestion(Persistable):
 
         self.options              = []
         self.correctAns           = -2
+        #diffChoice to classify question
+        self.diffChoice           = -2
         self.userAns              = -1
         self._questionInstruc      = x_(u"""Enter the question stem. 
 The quest should be clear and unambiguous. Avoid negative premises 
@@ -125,10 +127,20 @@ a range of plausible distractors (usually 3-4) as well as the correct answer.
 Click on the &lt;Add another option&gt; button to add another answer.""")
         self._correctAnswerInstruc = x_(u"""To indicate the correct answer, 
 click the radio button next to the correct option.""")
+        self._tagInstruc = x_(u"""Enter the Category to classify this question""")
     
         self.questionTextArea      = TextAreaField(x_(u'Question:'),
                                          self._questionInstruc, u'')
         self.questionTextArea.idevice = self.idevice
+
+        self.tagTextArea =  TextAreaField(x_(u'Category:'),
+                                         self._tagInstruc, u'')
+        self.tagTextArea.idevice = self.idevice
+
+        self.isHard = False
+        self.isMedium = False
+        self.isEasy = False
+
 
         self.addOption()
     
@@ -136,6 +148,7 @@ click the radio button next to the correct option.""")
     questionInstruc      = lateTranslate('questionInstruc')
     optionInstruc        = lateTranslate('optionInstruc')
     correctAnswerInstruc = lateTranslate('correctAnswerInstruc')
+    #Add later
     
     def addOption(self):
         """
@@ -156,6 +169,14 @@ click the radio button next to the correct option.""")
                 and this_resource == this_image._imageResource: 
                     return self.questionTextArea
 
+        # be warned that before upgrading, this iDevice field could not exist:
+        if hasattr(self, 'tagTextArea') \
+        and hasattr(self.tagTextArea, 'images'):
+            for this_image in self.tagTextArea.images:
+                if hasattr(this_image, '_imageResource') \
+                and this_resource == this_image._imageResource:
+                    return self.tagTextArea
+
         for this_option in self.options:
             this_field = this_option.getResourcesField(this_resource)
             if this_field is not None:
@@ -172,6 +193,9 @@ click the radio button next to the correct option.""")
         fields_list = []
         if hasattr(self, 'questionTextArea'):
             fields_list.append(self.questionTextArea)
+
+        if hasattr(self, 'tagTextArea'):
+            fields_list.append(self.tagTextArea)
 
         for this_option in self.options:
             fields_list.extend(this_option.getRichTextFields())
@@ -253,10 +277,11 @@ time to learn and practice using the information or skill.
         self.emphasis   = Idevice.SomeEmphasis
         self.score      = -1
         self.isAnswered = True
-        self.passRate   = "70"
+        self.passRate   = "50"
         self.questions  = []
         self.addQuestion()
         self.systemResources += ["common.js"]
+
         
 
     def addQuestion(self):

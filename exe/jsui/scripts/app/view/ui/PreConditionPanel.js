@@ -22,45 +22,44 @@ Ext.define('eXe.view.ui.PreConditionPanel', {
     alias: 'widget.preconditionpanel',
 
 
-    initComponent: function() {
+    initComponent: function () {
         var me = this;
 
         Ext.applyIf(me, {
-        				height: 309,
-						items: [{
-							xtype: 'container',
-							layout: 'hbox',
-							//layout:'column',
-							border: 0,
-							margin: 10,
-							width: '94%',
-							items: [{
-							    xtype: 'combobox',
-                                id: 'seqTarget',
-							inputId: 'locale',
-							dirtyCls: 'property-form-dirty',
-							fieldLabel: _("Available when"),
-							labelWidth: 150,
-							margin: 10,
-							queryModel: 'local',
-							displayField: 'text',
-							valueField: 'value',
-							store: {
-							    storeId: 'combostore',
-								fields: ['value', 'text'],
-								proxy: {
-									type: 'ajax',
-									url: 'sequencing',
-									reader: {
-										type: 'json',
-										root: 'Nodes'
-									}
-								},
-
-								autoLoad: true
-									}
-								}]
-						}]
+            height: 309,
+            items: [{
+                xtype: 'container',
+                layout: 'hbox',
+                //layout:'column',
+                border: 0,
+                margin: 10,
+                width: '94%',
+                items: [{
+                    xtype: 'combobox',
+                    id: 'seqTarget',
+                    inputId: 'locale',
+                    dirtyCls: 'property-form-dirty',
+                    fieldLabel: _("Available when"),
+                    labelWidth: 150,
+                    margin: 10,
+                    queryModel: 'local',
+                    displayField: 'text',
+                    valueField: 'value',
+                    store: {
+                        storeId: 'combostore',
+                        fields: ['value', 'text'],
+                        proxy: {
+                            type: 'ajax',
+                            url: 'sequencing',
+                            reader: {
+                                type: 'json',
+                                root: 'Nodes'
+                            }
+                        },
+                        autoLoad: true
+                    }
+                }]
+            }]
         });
 
         me.callParent(arguments);

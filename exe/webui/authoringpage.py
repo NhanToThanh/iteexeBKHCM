@@ -34,6 +34,7 @@ from exe.webui.blockfactory  import g_blockFactory
 from exe.engine.error        import Error
 from exe.webui.renderable    import RenderableResource
 from exe.webui.sequencingspage import SequencingPage
+from exe.webui.taganddiff import TagAndDifficulty
 from exe.engine.path         import Path
 from exe                     import globals as G
 import re
@@ -155,6 +156,7 @@ class AuthoringPage(RenderableResource):
         html += common.hiddenField(u"action")
         html += common.hiddenField(u"object")
         html += common.hiddenField(u"isChanged", u"0")
+        html += common.hiddenField(u"numQuiz", u"0")
         html += common.hiddenField(u"currentNode", unicode(topNode.id))
         html += common.hiddenField(u'clientHandleId', request.args['clientHandleId'][0])
         html += u'<!-- start authoring page -->\n'
@@ -280,8 +282,9 @@ class AuthoringPage(RenderableResource):
             self.blocks.append(block)
 
     def seqFooter(self):
-
         self.sequencings = SequencingPage(self, packRoot=self.package.root)
+        self.taganddiffs = TagAndDifficulty(self, packRoot=self.package.root)
+
         return unicode('')
 
 # ===========================================================================

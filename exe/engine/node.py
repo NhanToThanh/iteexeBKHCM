@@ -67,6 +67,7 @@ class Node(Persistable):
         self._title = title
         self.children = []
         self.idevices = []
+        self.allQuestions = []
 
         # set its initial old node path for internal anchors, before any moves
         self.last_full_node_path = self.GetFullNodePath()
@@ -605,7 +606,25 @@ class Node(Persistable):
         idevice.parentNode = self
         for oldIdevice in self.idevices:
             oldIdevice.edit = False
+        if hasattr(idevice, "isTest"):
+            self.allQuestions = []
+            self.__getQuestionsRec(self.package.root, 0)
+            idevice.questions = self.allQuestions
         self.idevices.append(idevice)
+
+    def __getQuestionsRec(self, Rooot, depth):
+        for idevice in Rooot.idevices:
+            if "QuizTestIdevice" in str(type(idevice)):
+                for question in idevice.questions:
+                    self.allQuestions.append(question)
+        for child in Rooot.children:
+            self.__getQuestionsRec(child, depth + 1)
+        return True
+#5485660019456353
+
+
+    def getQuestionValue(self, question):
+        return question
 
     def move(self, newParent, nextSibling=None):
         """

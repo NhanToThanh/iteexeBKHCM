@@ -435,7 +435,7 @@ function clearHidden()
 
 // Sets the hidden action and object fields, then submits the 
 // contentForm to the server
-function execute_submitLink(action, object, changed, currentNode) 
+function execute_submitLink(action, object, changed, currentNode, numQuiz)
 {
     var theForm = getContentForm();
 
@@ -443,6 +443,7 @@ function execute_submitLink(action, object, changed, currentNode)
 	    theForm.action.value    = action;
 	    theForm.object.value    = object;
 	    theForm.isChanged.value = changed;
+	    theForm.numQuiz.value = numQuiz;
 
         if (currentNode)
             theForm.currentNode.value = currentNode;
@@ -452,29 +453,19 @@ function execute_submitLink(action, object, changed, currentNode)
 	    theForm.submit();
     }
 }
-function submitLink(action, object, changed, currentNode)
+
+function submitLink(action, object, changed, currentNode, numQuiz)
 {
-        /*
-	    var astr ='';
-	    astr += 'action: '
-        astr += action;
-	    astr += '\nobject: '
-        astr += object;
-	    astr += '\nchanged: '
-        astr += changed;
-	    astr += '\nCurrentNode: '
-        astr += currentNode;
-        alert(astr);
-        */
+
     var ed = "";
     if (typeof(tinyMCE)!='undefined' && tinyMCE.activeEditor) ed = tinyMCE.activeEditor;
     if (ed!="" && ed.id=="mce_fullscreen") {
         ed.execCommand('mceFullScreen');
         setTimeout(function(){
-            execute_submitLink(action, object, changed, currentNode); 
+            execute_submitLink(action, object, changed, currentNod, numQuiz);
         },500);
     } else {
-        execute_submitLink(action, object, changed, currentNode);
+        execute_submitLink(action, object, changed, currentNode, numQuiz);
     }
 }
 

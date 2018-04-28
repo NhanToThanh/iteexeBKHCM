@@ -83,6 +83,7 @@ class IdevicePane(Renderable, Resource):
             self.package.isChanged = True
             prototype = self.prototypes.get(request.args["object"][0])
             if prototype:
+
                 node = self.package.findNode(request.args["currentNode"][0])
                 node.addIdevice(prototype.clone())
 

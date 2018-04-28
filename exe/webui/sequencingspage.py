@@ -75,8 +75,6 @@ class SequencingPage(RenderableResource):
         for child in node.children:
             self.__getNodeOptions(child, depth + 1)
         return True
-        #self.Nodes.append({'value': 'Home', 'text': 'Home'})
-        #self.Nodes.append({'value': 'Title1', 'text': 'Title01'})
 
     def __isQuizz(self, idevices):
         for idevice in idevices:
@@ -93,19 +91,8 @@ class SequencingPage(RenderableResource):
 
 
     def render_GET(self, request):
-        """Render the preferences"""
-        # aa = u'This not a String:\n' + request
-        # with io.open('C:\data3.txt', 'w', encoding='utf-8') as f:
-        #    f.write(aa)
-        #if self.pacRoot:
-            # for child in self.pacRoot:
-            # self.Nodes.append({'value': child.titleLong, 'text': child.titleLong})
-        #    self.Nodes.append({'value': self.pacRoot.titleLong, 'text': self.pacRoot.titleLong})
-        #else:
-         #   self.Nodes.append({'value': 'NotOK', 'text': 'NoteOK'})
-        #self.Nodes = Nodestest[len(Nodestest)-4:len(Nodestest)]
+
         self.Nodes = Nodestest
-        #a = numNodes
         return json.dumps({'success': True, 'Nodes': self.Nodes})
 
 

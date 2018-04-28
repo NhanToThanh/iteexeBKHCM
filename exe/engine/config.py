@@ -98,7 +98,7 @@ class Config(object):
         'case study': [x_('Non-Interactive Activities')],
         'preknowledge': [x_('Textual Information')],
         'scorm quiz': [x_('Interactive Activities')],
-        'scorm quiz 2': [x_('Interactive Activities')],
+        'scorm test': [x_('Interactive Activities')],
         'fpd - multi choice activity': [x_('FPD')],
         'fpd - cloze activity': [x_('FPD')],
         'fpd - cloze activity (modified)': [x_('FPD')],

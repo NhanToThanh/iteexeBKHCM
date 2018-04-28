@@ -21,28 +21,53 @@
 Ext.define('eXe.controller.Idevice', {
     extend: 'Ext.app.Controller',
 
+    requires: [
+        'eXe.view.forms.TagAndDifficultyPanel',
+    ],
+
     stores: ['IdeviceXmlStore'],
-    
-    init: function() {
+
+    init: function () {
         this.control({
             '#idevice_panel': {
-                itemclick:	this.onIdeviceClick
+                itemclick: this.onIdeviceClick
             }
         });
     },
-    
-    onIdeviceClick: function(view, record, item, index, e, eOpts) {
+
+    onIdeviceClick: function (view, record, item, index, e, eOpts) {
         var authoring = Ext.ComponentQuery.query('#authoring')[0].getWin();
         if (authoring && authoring.submitLink && !view.panel.editing) {
             var outlineTreePanel = eXe.app.getController("Outline").getOutlineTreePanel(),
                 selected = outlineTreePanel.getSelectionModel().getSelection();
-            authoring.submitLink("AddIdevice", record.data.id, 1, selected !== 0? selected[0].data.id : '0');
+            authoring.submitLink("AddIdevice", record.data.id, 1, selected !== 0 ? selected[0].data.id : '0', "0");
+
+            /*var taganddiff = new Ext.Window({
+                    height: 390,
+                    width: 650,
+                    modal: true,
+                    id: 'tagdiffwin',
+                    title: _("Category and Difficulty"),
+                    layout: 'fit',
+                    items: [{
+                        xtype: 'taganddifficultypanel'
+                    }]
+                }),
+            formpanel = taganddiff.down('form');
+            formpanel.load({url: 'taganddiff', method: 'GET'});
+            taganddiff.show();
+        }
+        else {
+            authoring.submitLink("AddIdevice", record.data.id, 1, selected !== 0 ? selected[0].data.id : '0');
+        }*/
 
         }
     },
-    
-    reload: function() {
+
+    reload: function () {
         var store = this.getIdeviceXmlStoreStore();
         store.load();
     }
 });
+
+

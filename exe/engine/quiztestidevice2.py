@@ -241,7 +241,7 @@ class QuizTestIdevice2(Idevice):
         Initialize 
         """
         Idevice.__init__(self,
-                         x_(u"SCORM Quiz 2"),
+                         x_(u"SCORM Test"),
                          x_(u"University of Auckland"),
                          x_(u"""Unlike the MCQ the SCORM quiz is used to test 
 the learners knowledge on a topic without providing the learner with feedback 
