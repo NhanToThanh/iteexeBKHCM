@@ -52,7 +52,7 @@ class TestquestionElement(object):
         if question.questionTextArea.idevice is None:
             question.questionTextArea.idevice = idevice
         self.questionElement = TextAreaElement(question.questionTextArea)
-        self.tagElement = TextAreaElement(question.tagTextArea)
+        #self.tagElement = TextAreaElement(question.tagTextArea)
 
         self.question = question
         self.tag = ""
@@ -60,8 +60,8 @@ class TestquestionElement(object):
         self.questionId = "question" + self.id
         self.questionElement.id = self.questionId
 
-        self.tagId = "tag" + self.id
-        self.tagElement.id = self.tagId
+        #self.tagId = "tag" + self.id
+        #self.tagElement.id = self.tagId
 
         self.options = []
         self.keyId = "key" + self.id
@@ -73,9 +73,7 @@ class TestquestionElement(object):
                                                   option,
                                                   idevice))
             i += 1
-        self.isHard = question.isHard
-        self.isMedium = question.isMedium
-        self.isEasy = question.isEasy
+
 
     def process(self, request):
         """
@@ -85,8 +83,8 @@ class TestquestionElement(object):
         if self.questionId in request.args:
             self.questionElement.process(request)
 
-        if self.tagId in request.args:
-            self.tagElement.process(request)
+        #if self.tagId in request.args:
+        #    self.tagElement.process(request)
 
 
         if ("addOption" + unicode(self.id)) in request.args:
@@ -97,18 +95,24 @@ class TestquestionElement(object):
 
         if "d" + self.keyId in request.args:
             if request.args["d" + self.keyId][0][0] == 'h':
-                self.idevice.isHard = True
-                log.debug("hard check " + repr(self.isHard))
+                self.question.isHard = True
+                self.question.isMedium = False
+                self.question.isEasy = False
+                log.debug("hard check " + repr(self.question.isHard))
             elif request.args["d" + self.keyId][0][0] == 'm':
-                self.idevice.isMedium = True
-                log.debug("medium check " + repr(self.isMedium))
+                self.question.isMedium = True
+                self.question.isHard = False
+                self.question.isEasy = False
+                log.debug("medium check " + repr(self.question.isMedium))
             elif request.args["d" + self.keyId][0][0] == 'e':
-                self.idevice.isEasy = True
-                log.debug("ez check " + repr(self.isEasy))
+                self.question.isEasy = True
+                self.question.isHard = False
+                self.question.isMedium = False
+                log.debug("ez check " + repr(self.question.isEasy))
             else:
-                self.isEasy = False
-                self.isMedium = False
-                self.isHard = False
+                self.question.isHard = False
+                self.question.isMedium = False
+                self.question.isEasy = False
 
 
         if "action" in request.args and request.args["action"][0] == self.id:
@@ -134,7 +138,6 @@ class TestquestionElement(object):
                                    "/images/stock-cancel.png",
                                    _("Delete question"))
         html += self.questionElement.renderEdit()
-        html += self.tagElement.renderEdit()
 
         lb = "\n"
         fieldId = self.keyId + unicode((self.index + 1));
@@ -143,13 +146,13 @@ class TestquestionElement(object):
         #    "Option") + ' ' + unicode((self.index + 1)) + '</a></label>'
         html += '<strong id="diff-label" style="margin-right: 5px;">Set the Diffuculty: </strong>'
         html += common.option("d" + self.keyId,
-                              False, "h"+fieldId)
+                              self.question.isHard, "h"+fieldId)
         html += ' Hard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
         html += common.option("d" + self.keyId,
-                              False, "m" + fieldId)
+                              self.question.isMedium, "m" + fieldId)
         html += ' Muedium &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
         html += common.option("d" + self.keyId,
-                              False, "e" + fieldId)
+                              self.question.isEasy, "e" + fieldId)
         html += ' Easy &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
 
 

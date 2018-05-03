@@ -1,5 +1,5 @@
 # ===========================================================================
-# eXe 
+# eXe
 # Copyright 2004-2006, University of Auckland
 # Copyright 2004-2008 eXe Project, http://eXeLearning.org/
 #
@@ -22,10 +22,10 @@ A QuizTest Idevice is one built up from TestQuestions
 """
 
 import logging
-from exe.engine.persist   import Persistable
-from exe.engine.idevice   import Idevice
+from exe.engine.persist import Persistable
+from exe.engine.idevice import Idevice
 from exe.engine.translate import lateTranslate
-from exe.engine.field     import TextAreaField
+from exe.engine.field import TextAreaField
 import re
 
 log = logging.getLogger(__name__)
@@ -45,9 +45,9 @@ class AnswerOption(Persistable):
         self.question = question
         self.idevice = idevice
 
-        self.answerTextArea  = TextAreaField(x_(u'Option'),
-                                   self.question._optionInstruc,
-                                   answer)
+        self.answerTextArea = TextAreaField(x_(u'Option'),
+                                            self.question._optionInstruc,
+                                            answer)
         self.answerTextArea.idevice = idevice
 
         self.isCorrect = isCorrect
@@ -57,11 +57,11 @@ class AnswerOption(Persistable):
         implement the specific resource finding mechanism for this iDevice:
         """
         # be warned that before upgrading, this iDevice field could not exist:
-        if hasattr(self, 'answerTextArea')\
-        and hasattr(self.answerTextArea, 'images'):
+        if hasattr(self, 'answerTextArea') \
+                and hasattr(self.answerTextArea, 'images'):
             for this_image in self.answerTextArea.images:
                 if hasattr(this_image, '_imageResource') \
-                and this_resource == this_image._imageResource:
+                        and this_resource == this_image._imageResource:
                     return self.answerTextArea
 
         return None
@@ -95,10 +95,11 @@ class AnswerOption(Persistable):
         """
         self.idevice = idevice
         self.question = question
-        self.answerTextArea    = TextAreaField(x_(u'Option'),
-                                     self.question._optionInstruc,
-                                     self.answer)
+        self.answerTextArea = TextAreaField(x_(u'Option'),
+                                            self.question._optionInstruc,
+                                            self.answer)
         self.answerTextArea.idevice = self.idevice
+
 
 # ===========================================================================
 class TestQuestion(Persistable):
@@ -108,34 +109,47 @@ class TestQuestion(Persistable):
 
     persistenceVersion = 3
 
-    def __init__(self, idevice, question=""):
+    def __init__(self, idevice, question="", isHard=False, isMedium=False, isEasy=False):
         """
         Initialize
         """
-        self.idevice              = idevice
+        self.idevice = idevice
 
-        self.options              = []
-        self.correctAns           = -2
-        self.userAns              = -1
-        self._questionInstruc      = x_(u"""Enter the question stem. 
+        self.options = []
+        self.correctAns = -2
+        # diffChoice to classify question
+        self.diffChoice = -2
+        self.userAns = -1
+        self._questionInstruc = x_(u"""Enter the question stem. 
 The quest should be clear and unambiguous. Avoid negative premises 
 as these can tend to be ambiguous.""")
-        self._optionInstruc        = x_(u"""Enter an answer option. Provide 
+        self._optionInstruc = x_(u"""Enter an answer option. Provide 
 a range of plausible distractors (usually 3-4) as well as the correct answer. 
 Click on the &lt;Add another option&gt; button to add another answer.""")
         self._correctAnswerInstruc = x_(u"""To indicate the correct answer, 
 click the radio button next to the correct option.""")
+        #self._tagInstruc = x_(u"""Enter the Category to classify this question""")
 
-        self.questionTextArea      = TextAreaField(x_(u'Question:'),
-                                         self._questionInstruc, u'')
+        self.questionTextArea = TextAreaField(x_(u'Question:'),
+                                              self._questionInstruc, u'')
         self.questionTextArea.idevice = self.idevice
+
+        #self.tagTextArea = TextAreaField(x_(u'Category:'),
+        #                                 self._tagInstruc, u'')
+        #self.tagTextArea.idevice = self.idevice
+
+        self.isHard = isHard
+        self.isMedium = isMedium
+        self.isEasy = isEasy
 
         self.addOption()
 
     # Properties
-    questionInstruc      = lateTranslate('questionInstruc')
-    optionInstruc        = lateTranslate('optionInstruc')
+    questionInstruc = lateTranslate('questionInstruc')
+    optionInstruc = lateTranslate('optionInstruc')
     correctAnswerInstruc = lateTranslate('correctAnswerInstruc')
+
+    # Add later
 
     def addOption(self):
         """
@@ -143,18 +157,18 @@ click the radio button next to the correct option.""")
         """
         self.options.append(AnswerOption(self, self.idevice))
 
-
     def getResourcesField(self, this_resource):
         """
         implement the specific resource finding mechanism for this iDevice:
         """
         # be warned that before upgrading, this iDevice field could not exist:
-        if hasattr(self, 'questionTextArea')\
-        and hasattr(self.questionTextArea, 'images'):
+        if hasattr(self, 'questionTextArea') \
+                and hasattr(self.questionTextArea, 'images'):
             for this_image in self.questionTextArea.images:
                 if hasattr(this_image, '_imageResource') \
-                and this_resource == this_image._imageResource:
+                        and this_resource == this_image._imageResource:
                     return self.questionTextArea
+
 
         for this_option in self.options:
             this_field = this_option.getResourcesField(this_resource)
@@ -173,11 +187,12 @@ click the radio button next to the correct option.""")
         if hasattr(self, 'questionTextArea'):
             fields_list.append(self.questionTextArea)
 
+
+
         for this_option in self.options:
             fields_list.extend(this_option.getRichTextFields())
 
         return fields_list
-
 
     def upgradeToVersion1(self):
         """
@@ -191,7 +206,7 @@ Click on the &lt;Add another option&gt; button to add another answer.""")
         """
         Upgrades to v 0.13
         """
-        self._questionInstruc= x_(u"""Enter the question stem. 
+        self._questionInstruc = x_(u"""Enter the question stem. 
 The quest should be clear and unambiguous. Avoid negative premises 
 as these can tend to be ambiguous.""")
 
@@ -218,9 +233,9 @@ click the radio button next to the correct option.""")
         and converting them into a image-enabled TextAreaFields:
         """
         self.idevice = idevice
-        self.questionTextArea    = TextAreaField(x_(u'Question:'),
-                                     self._questionInstruc,
-                                     self.question)
+        self.questionTextArea = TextAreaField(x_(u'Question:'),
+                                              self._questionInstruc,
+                                              self.question)
         self.questionTextArea.idevice = self.idevice
 
         # and then, need to propagate the same upgrades

@@ -614,7 +614,7 @@ class Node(Persistable):
 
     def __getQuestionsRec(self, Rooot, depth):
         for idevice in Rooot.idevices:
-            if "QuizTestIdevice" in str(type(idevice)):
+            if hasattr(idevice, "isQuiz"):
                 for question in idevice.questions:
                     self.allQuestions.append(question)
         for child in Rooot.children:

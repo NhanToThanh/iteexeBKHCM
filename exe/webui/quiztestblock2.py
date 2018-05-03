@@ -43,6 +43,7 @@ class QuizTestBlock2(Block):
         self.idevice = idevice
         self.questionElements = []
         self.message = False
+        self.allQuizTitles = []
         if not hasattr(self.idevice, 'undo'):
             self.idevice.undo = True
 
@@ -104,6 +105,7 @@ class QuizTestBlock2(Block):
         html += common.textInput("title" + self.id, self.idevice.title)
         html += u"<br/><br/>\n"
 
+
         for element in self.questionElements:
             html += element.renderEdit()
 
@@ -119,11 +121,38 @@ class QuizTestBlock2(Block):
             else:
                 html += template % (str(i), '', str(i))
         html += "</select>\n"
+        self.allQuizTitles = []
+        self.__getAllQuizTitles(self.package.root, 0)
+        #html += '<strong id="diff-label" style="margin-right: 5px;">Set the Diffuculty: </strong>'
+        igen = 0
+        html += "<br/><br/>"
+        for title in self.allQuizTitles:
+            igen += 1
+            html += '<strong id="diff-label" style="margin-right: 5px;">%s: </strong>'%title
+            html += "<br/>"
+            html += '<span>Number of Hard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>'
+            html += common.textInput("title" + title +"hard"+ str(igen))
+            html += "<br/>"
+            html += '<span>Number of Medium: </span>'
+            html += common.textInput("title" + title + "med" + str(igen))
+            html += "<br/>"
+            html += '<span>Number of Easy&nbsp;&nbsp;&nbsp;&nbsp;: </span>'
+            html += common.textInput("title" + title + "easy" + str(igen))
+            html += "<br/><br/>"
+
         html += "<br /><br />" + self.renderEditButtons(undo=self.idevice.undo)
         html += "</div>\n"
         self.idevice.isAnswered = True
 
         return html
+
+    def __getAllQuizTitles(self, Rooot, depth):
+        for idevice in Rooot.idevices:
+            if  hasattr(idevice, "isQuiz"):
+                self.allQuizTitles.append(idevice._title)
+        for child in Rooot.children:
+            self.__getAllQuizTitles(child, depth + 1)
+        return True
 
     def renderView(self, style, preview=False, numQ=None):
         """

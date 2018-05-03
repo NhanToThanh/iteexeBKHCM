@@ -34,7 +34,6 @@ from exe.webui.blockfactory  import g_blockFactory
 from exe.engine.error        import Error
 from exe.webui.renderable    import RenderableResource
 from exe.webui.sequencingspage import SequencingPage
-from exe.webui.taganddiff import TagAndDifficulty
 from exe.engine.path         import Path
 from exe                     import globals as G
 import re
@@ -283,7 +282,6 @@ class AuthoringPage(RenderableResource):
 
     def seqFooter(self):
         self.sequencings = SequencingPage(self, packRoot=self.package.root)
-        self.taganddiffs = TagAndDifficulty(self, packRoot=self.package.root)
 
         return unicode('')
 

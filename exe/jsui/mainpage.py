@@ -66,7 +66,7 @@ from exe.export.xmlexport        import XMLExport
 from requests_oauthlib           import OAuth2Session
 from exe.webui.oauthpage         import ProcomunOauth
 from suds.client                 import Client
-from exe.webui.authoringpagefake import AuthoringPagefake
+
 
 from exe.engine.lom import lomsubs
 from exe.engine.lom.lomclassification import Classification
