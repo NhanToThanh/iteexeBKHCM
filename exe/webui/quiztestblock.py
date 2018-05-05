@@ -41,6 +41,7 @@ class QuizTestBlock(Block):
         self.idevice           = idevice
         self.questionElements  = []
         self.message = False
+        self.allQuizTitles = []
         if not hasattr(self.idevice,'undo'): 
             self.idevice.undo = True
 
@@ -102,6 +103,12 @@ class QuizTestBlock(Block):
         if not self.idevice.isAnswered:
             html += common.editModeHeading(
                 _("Please select a correct answer for each question."))
+        self.allQuizTitles = []
+        self.__getAllQuizTitles(self.package.root, 0)
+
+        if self.allQuizTitles.count(self.idevice.title) != 1:
+            html += common.editModeHeading(
+                _("PLease change the Quiz title, Title must be unique."))
         html += common.textInput("title"+self.id, self.idevice.title)
         html += u"<br/><br/>\n"
         
@@ -126,6 +133,14 @@ class QuizTestBlock(Block):
         self.idevice.isAnswered = True
 
         return html
+
+    def __getAllQuizTitles(self, Rooot, depth):
+        for idevice in Rooot.idevices:
+            if  hasattr(idevice, "isQuiz"):
+                self.allQuizTitles.append(idevice._title)
+        for child in Rooot.children:
+            self.__getAllQuizTitles(child, depth + 1)
+        return True
 
     def renderView(self, style, preview=False, numQ=None):
         """

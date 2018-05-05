@@ -252,7 +252,7 @@ class TextAreaElement(ElementWithResources):
                                 str(self.width), str(self.height))
         return html
 
-    def renderPreview(self, visible=True, class_="block"):
+    def renderPreview(self, visible=True, class_="block", typeStr =""):
         """
         Returns an XHTML string for previewing this element
         """
@@ -285,7 +285,7 @@ class TextAreaElement(ElementWithResources):
                 lambda mo: replaceLinks(mo, self.field.idevice.parentNode.package.name),
                 self.field.content)
         return self.renderView(content=content, visible=visible, \
-                               class_=class_, preview=True)
+                               class_=class_, preview=True, typeStr=typeStr)
 
     """
     Run Media Adaptation as required
@@ -420,7 +420,7 @@ class TextAreaElement(ElementWithResources):
         
         return xml
 
-    def renderView(self, visible=True, class_="block", content=None, preview=False):
+    def renderView(self, visible=True, class_="block", content=None, preview=False, typeStr =""):
         """
         Returns an XHTML string for viewing or previewing this element
         """
@@ -452,7 +452,7 @@ class TextAreaElement(ElementWithResources):
                     self.field.content_wo_resourcePaths = self.field.content
                 self.field.content = self.field.content_wo_resourcePaths
             content = self.field.content
-        return '<%s id="ta%s" class="%s iDevice_content"%s>%s%s%s</%s>%s' % (htmlTag, self.id, class_, visible, lb, content, lb, htmlTag, lb)
+        return '<%s id="ta%s" class="%s iDevice_content"%s>%s<strong>%s</strong>%s</%s>%s' % (htmlTag, self.id, class_, visible, content, typeStr, lb, htmlTag, lb)
 
 
 # ===========================================================================

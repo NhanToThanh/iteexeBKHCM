@@ -109,7 +109,7 @@ class TestQuestion(Persistable):
 
     persistenceVersion = 3
 
-    def __init__(self, idevice, question="", isHard=False, isMedium=False, isEasy=False):
+    def __init__(self, idevice, question="", isHard=False, isMedium=False, isEasy=False, isOnTest = False, onTest = False):
         """
         Initialize
         """
@@ -141,6 +141,8 @@ click the radio button next to the correct option.""")
         self.isHard = isHard
         self.isMedium = isMedium
         self.isEasy = isEasy
+        self.isOnTest = isOnTest
+        self.onTest = onTest
 
         self.addOption()
 
@@ -270,6 +272,7 @@ time to learn and practice using the information or skill.
         self.isAnswered = True
         self.passRate   = "80"
         self.questions  = []
+        self.questionsOutput = []
         self.addQuestion()
         self.systemResources += ["common.js"]
         

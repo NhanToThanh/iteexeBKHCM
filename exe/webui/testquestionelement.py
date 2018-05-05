@@ -201,13 +201,30 @@ class TestquestionElement(object):
             sectionTag = "section"
             titleTag1 = "h1"
             titleTag2 = "h1"
+        typeStr = ""
+        if self.question.isHard:
+            typeStr += "(Hard"
+        elif self.question.isMedium:
+            typeStr += "(Medium"
+        elif self.question.isEasy:
+            typeStr += "(Easy"
+        else:
+            pass
+
+        if hasattr(self.question, "isOnTest"):
+            if self.question.isOnTest:
+                typeStr += ", This Questions is on Test)"
+            else:
+                typeStr += ")"
+        else:
+            typeStr += ")"
         html = ''
         html += '<' + sectionTag + ' class="question">' + lb
         html += '<' + titleTag1 + ' class="js-sr-av">' + c_("Question") + '</' + titleTag1 + '>' + lb
         if preview:
-            html += self.questionElement.renderPreview()
+            html += self.questionElement.renderPreview(typeStr = typeStr)
         else:
-            html += self.questionElement.renderView()
+            html += self.questionElement.renderView(typeStr = typeStr)
         # Answers
         html += '<' + sectionTag + ' class="iDevice_answers">' + lb
         html += '<' + titleTag2 + ' class="js-sr-av">' + c_("Answers") + '</' + titleTag2 + '>' + lb

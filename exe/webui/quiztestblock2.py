@@ -44,6 +44,7 @@ class QuizTestBlock2(Block):
         self.questionElements = []
         self.message = False
         self.allQuizTitles = []
+        self.questionsOutput = []
         if not hasattr(self.idevice, 'undo'):
             self.idevice.undo = True
 
@@ -74,6 +75,57 @@ class QuizTestBlock2(Block):
         for element in self.questionElements:
             element.process(request)
 
+
+
+        for title in self.allQuizTitles:#chay tung cai test
+            if (str(title[0]) + "hard") in request.args:
+                numHard = -1
+                if (request.args[str(title[0]) + "hard"][0] != u""):
+                    numHard = int(request.args[str(title[0]) + "hard"][0])
+                    if numHard > title[1]:
+                        numHard = title[1]
+                else:
+                    numHard = -1
+                numMed = -1
+                if (request.args[str(title[0]) + "med"][0] != u""):
+                    numMed = int(request.args[str(title[0]) + "med"][0])
+                    if numMed > title[2]:
+                        numMed = title[2]
+                else:
+                    numMed = -1
+                numEasy = -1
+                if (request.args[str(title[0]) + "easy"][0] != u""):
+                    numEasy = int(request.args[str(title[0]) + "easy"][0])
+                    if numEasy > title[3]:
+                        numEasy = title[3]
+                else:
+                    numEasy = -1
+
+                for question in self.questionElements:
+                    if question.question.idevice._title in str(title[0]) and question.question.isHard:
+                        if numHard <= 0:
+                            pass
+                        else:
+                            self.idevice.questionsOutput.append(question.question)
+                            question.question.isOnTest = True
+                            numHard -= 1
+                    if question.question.idevice._title in str(title[0]) and question.question.isMedium:
+                        if numMed <= 0:
+                            pass
+                        else:
+                            self.idevice.questionsOutput.append(question.question)
+                            question.question.isOnTest = True
+                            numMed -= 1
+                    if question.question.idevice._title in str(title[0]) and question.question.isEasy:
+                        if numEasy <= 0:
+                            pass
+                        else:
+                            self.idevice.questionsOutput.append(question.question)
+                            question.question.isOnTest = True
+                            numEasy -= 1
+
+
+
         if ("action" in request.args and request.args["action"][0] == "done"
                 or not self.idevice.edit):
             self.idevice.isAnswered = True
@@ -94,6 +146,7 @@ class QuizTestBlock2(Block):
                 and not is_cancel:
             self.idevice.title = request.args["title" + self.id][0]
 
+
     def renderEdit(self, style):
         """
         Returns an XHTML string with the form element for editing this block
@@ -102,6 +155,11 @@ class QuizTestBlock2(Block):
         if not self.idevice.isAnswered:
             html += common.editModeHeading(
                 _("Please select a correct answer for each question."))
+        #if self.allQuizTitles.count(self.idevice.title) != 1:
+        #    html += common.editModeHeading(
+        #        _("PTitle must bu unique."))
+        #for title in self.allQuizTitles:
+        #    if
         html += common.textInput("title" + self.id, self.idevice.title)
         html += u"<br/><br/>\n"
 
@@ -123,21 +181,21 @@ class QuizTestBlock2(Block):
         html += "</select>\n"
         self.allQuizTitles = []
         self.__getAllQuizTitles(self.package.root, 0)
-        #html += '<strong id="diff-label" style="margin-right: 5px;">Set the Diffuculty: </strong>'
-        igen = 0
+
         html += "<br/><br/>"
+        html += "<strong>PLease enter the number of quiz to appear in the Test, If the entered number greater than the number of Quiz, the maximun number of Quiz is set.</strong>"
+        html += "<br/>"
         for title in self.allQuizTitles:
-            igen += 1
-            html += '<strong id="diff-label" style="margin-right: 5px;">%s: </strong>'%title
+            html += '<strong id="diff-label" style="margin-right: 5px;">%s: </strong>'%title[0]
             html += "<br/>"
-            html += '<span>Number of Hard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>'
-            html += common.textInput("title" + title +"hard"+ str(igen))
+            html += '<span>Enter number of Hard(Max: %s)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>'%str(title[1])
+            html += common.textInput(str(title[0]) +"hard")
             html += "<br/>"
-            html += '<span>Number of Medium: </span>'
-            html += common.textInput("title" + title + "med" + str(igen))
+            html += '<span>Enter number of Medium(Max: %s)&nbsp;: </span>'%str(title[2])
+            html += common.textInput(str(title[0]) +"med")
             html += "<br/>"
-            html += '<span>Number of Easy&nbsp;&nbsp;&nbsp;&nbsp;: </span>'
-            html += common.textInput("title" + title + "easy" + str(igen))
+            html += '<span>Enter number of Easy(Max: %s)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>'%str(title[3])
+            html += common.textInput(str(title[0]) +"easy")
             html += "<br/><br/>"
 
         html += "<br /><br />" + self.renderEditButtons(undo=self.idevice.undo)
@@ -149,16 +207,48 @@ class QuizTestBlock2(Block):
     def __getAllQuizTitles(self, Rooot, depth):
         for idevice in Rooot.idevices:
             if  hasattr(idevice, "isQuiz"):
-                self.allQuizTitles.append(idevice._title)
+                a, b, c = self.__getHardMediumEasy(idevice.questions)
+                self.allQuizTitles.append([idevice._title, a, b, c])
         for child in Rooot.children:
             self.__getAllQuizTitles(child, depth + 1)
         return True
+
+    def __getHardMediumEasy(self, questions):
+        numHard = 0
+        numMed  = 0
+        numEasy = 0
+        for question in questions:
+            if question.isHard:
+                numHard += 1
+            elif question.isMedium:
+                numMed  += 1
+            elif question.isEasy:
+                numEasy += 1
+        return numHard, numMed, numEasy
 
     def renderView(self, style, preview=False, numQ=None):
         """
         Returns an XHTML string for viewing this block
         """
-        return u" \n";
+        lb = "\n"  # Line breaks
+        html = common.ideviceHeader(self, style, "view")
+        html += '<form name="quizForm%s" id="quizForm%s" action="javascript:calcScore2();">' % (
+        self.idevice.id, self.idevice.id)
+        html += lb
+        html += u'<input type="hidden" name="passrate" id="passrate-' + self.idevice.id + '" value="' + self.idevice.passRate + '" />' + lb
+        for element in self.questionElements:
+            if preview:
+                html += element.renderPreview()
+            else:
+                html += element.renderView()
+        html += '<div class="block iDevice_buttons">' + lb
+        html += '<p><input type="submit" name="submitB" value="' + c_(
+            "SUBMIT ANSWERS") + '"  onclick="calcScore2%s()" /> ' % numQ + '</p>' + lb
+        html += '</div>' + lb
+        html += '<div id="quizFormScore' + self.id + '"></div>' + lb
+        html += '</form>' + lb
+        html += common.ideviceFooter(self, style, "view")
+        return html
 
     def renderJavascriptForWeb(self):
         """
@@ -329,13 +419,33 @@ class QuizTestBlock2(Block):
             }
             else{
                 resultsSummary += "<em>Incorrect</em><br>"
-                resultsSummary += "Your answer: " + learnerResponse + "<br>"
-                resultsSummary += "Correct answer: " + correctAnswer + "<br>"
+                
             }
             resultsSummary += "</div>";
         }
         var score = Math.round(correctCount * 100 / totalQuestions);
+        
+        
+        if(score >= %s){//mode ANY
+            resultsSummary += "<h3>You Pass the Test. Well done.</h3>";
+            scorm.SetCompletionStatus("completed");
+            scorm.SetSuccessStatus("passed");
+            scorm.SetExit("");
+            exitPageStatus = true;
+            scorm.save();
+            scorm.quit();
+        }else{
+            resultsSummary += "<h3>You Failed the Test</h3>";
+            scorm.SetCompletionStatus("incomplete");
+            scorm.SetSuccessStatus("failed");
+            scorm.SetExit("");
+            exitPageStatus = true;
+            scorm.save();
+            scorm.quit();
+        }
         resultsSummary = "<h3>Score: " + score + "</h3>" + resultsSummary;
+        
+        
         document.getElementById("test").innerHTML = resultsSummary;
         
         if (parent.RecordTest){
@@ -381,7 +491,7 @@ class QuizTestBlock2(Block):
     RenderTest(test);
     AddTagLine();
 </script>
-        '''
+        '''%self.idevice.passRate
 
         return scriptStr
 

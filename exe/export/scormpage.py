@@ -183,10 +183,13 @@ class ScormPage(Page):
                 if hasattr(idevice, "isTest"):
                     checkTest = True
                     numquiz+=1
-                    questionStringtoFile = self.renderQuestionsStr(block.idevice.questions)
+                    questionStringtoFile = self.renderQuestionsStr(block.idevice.questionsOutput)
                     html += block.renderJavascriptForScorm(thisnode = self.node, numQ = numquiz)
-                html += self.processInternalLinks(
-                    block.renderView(self.node.package.style, numQ = numquiz))
+                if hasattr(idevice, "isTest"):
+                    pass
+                else:
+                    html += self.processInternalLinks(
+                        block.renderView(self.node.package.style, numQ = numquiz))
                 html += u'</'+articleTag+'>'+lb # iDevice div
 
         html += u"</"+sectionTag+">"+lb # /#main
