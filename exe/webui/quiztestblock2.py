@@ -75,9 +75,7 @@ class QuizTestBlock2(Block):
         for element in self.questionElements:
             element.process(request)
 
-
-
-        for title in self.allQuizTitles:#chay tung cai test
+        for title in self.allQuizTitles:  # chay tung cai test
             if (str(title[0]) + "hard") in request.args:
                 numHard = -1
                 if (request.args[str(title[0]) + "hard"][0] != u""):
@@ -124,8 +122,6 @@ class QuizTestBlock2(Block):
                             question.question.isOnTest = True
                             numEasy -= 1
 
-
-
         if ("action" in request.args and request.args["action"][0] == "done"
                 or not self.idevice.edit):
             self.idevice.isAnswered = True
@@ -146,23 +142,25 @@ class QuizTestBlock2(Block):
                 and not is_cancel:
             self.idevice.title = request.args["title" + self.id][0]
 
-
     def renderEdit(self, style):
         """
         Returns an XHTML string with the form element for editing this block
         """
+        self.idevice.questionsOutput = []
+        for question in self.questionElements:
+            question.question.isOnTest = False;
+
         html = "<div class=\"iDevice\">\n"
         if not self.idevice.isAnswered:
             html += common.editModeHeading(
                 _("Please select a correct answer for each question."))
-        #if self.allQuizTitles.count(self.idevice.title) != 1:
+        # if self.allQuizTitles.count(self.idevice.title) != 1:
         #    html += common.editModeHeading(
         #        _("PTitle must bu unique."))
-        #for title in self.allQuizTitles:
+        # for title in self.allQuizTitles:
         #    if
         html += common.textInput("title" + self.id, self.idevice.title)
         html += u"<br/><br/>\n"
-
 
         for element in self.questionElements:
             html += element.renderEdit()
@@ -186,16 +184,16 @@ class QuizTestBlock2(Block):
         html += "<strong>PLease enter the number of quiz to appear in the Test, If the entered number greater than the number of Quiz, the maximun number of Quiz is set.</strong>"
         html += "<br/>"
         for title in self.allQuizTitles:
-            html += '<strong id="diff-label" style="margin-right: 5px;">%s: </strong>'%title[0]
+            html += '<strong id="diff-label" style="margin-right: 5px;">%s: </strong>' % title[0]
             html += "<br/>"
-            html += '<span>Enter number of Hard(Max: %s)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>'%str(title[1])
-            html += common.textInput(str(title[0]) +"hard")
+            html += '<span>Enter number of Hard(Max: %s)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>' % str(title[1])
+            html += common.textInput(str(title[0]) + "hard")
             html += "<br/>"
-            html += '<span>Enter number of Medium(Max: %s)&nbsp;: </span>'%str(title[2])
-            html += common.textInput(str(title[0]) +"med")
+            html += '<span>Enter number of Medium(Max: %s)&nbsp;: </span>' % str(title[2])
+            html += common.textInput(str(title[0]) + "med")
             html += "<br/>"
-            html += '<span>Enter number of Easy(Max: %s)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>'%str(title[3])
-            html += common.textInput(str(title[0]) +"easy")
+            html += '<span>Enter number of Easy(Max: %s)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>' % str(title[3])
+            html += common.textInput(str(title[0]) + "easy")
             html += "<br/><br/>"
 
         html += "<br /><br />" + self.renderEditButtons(undo=self.idevice.undo)
@@ -206,7 +204,7 @@ class QuizTestBlock2(Block):
 
     def __getAllQuizTitles(self, Rooot, depth):
         for idevice in Rooot.idevices:
-            if  hasattr(idevice, "isQuiz"):
+            if hasattr(idevice, "isQuiz"):
                 a, b, c = self.__getHardMediumEasy(idevice.questions)
                 self.allQuizTitles.append([idevice._title, a, b, c])
         for child in Rooot.children:
@@ -215,13 +213,13 @@ class QuizTestBlock2(Block):
 
     def __getHardMediumEasy(self, questions):
         numHard = 0
-        numMed  = 0
+        numMed = 0
         numEasy = 0
         for question in questions:
             if question.isHard:
                 numHard += 1
             elif question.isMedium:
-                numMed  += 1
+                numMed += 1
             elif question.isEasy:
                 numEasy += 1
         return numHard, numMed, numEasy
@@ -233,7 +231,7 @@ class QuizTestBlock2(Block):
         lb = "\n"  # Line breaks
         html = common.ideviceHeader(self, style, "view")
         html += '<form name="quizForm%s" id="quizForm%s" action="javascript:calcScore2();">' % (
-        self.idevice.id, self.idevice.id)
+            self.idevice.id, self.idevice.id)
         html += lb
         html += u'<input type="hidden" name="passrate" id="passrate-' + self.idevice.id + '" value="' + self.idevice.passRate + '" />' + lb
         for element in self.questionElements:
@@ -341,7 +339,7 @@ class QuizTestBlock2(Block):
         scriptStr = '''
         <script type="text/javascript">
     var QUESTION_TYPE_CHOICE = "choice";
-    
+
     function Question(id, text, type, answers, correctAnswer, objectiveId){
         this.Id = id;
         this.Text = text;
@@ -358,7 +356,7 @@ class QuizTestBlock2(Block):
     {
         this.Questions[this.Questions.length] = question;
     }
-    
+
     var test = new Test(new Array());
 </script>
 
@@ -377,16 +375,16 @@ class QuizTestBlock2(Block):
     function SubmitAnswers(){
         var correctCount = 0;
         var totalQuestions = test.Questions.length;
-        
+
         var resultsSummary = "";
-        
+
         for (var i in test.Questions){
             var question = test.Questions[i];
-            
+
             var wasCorrect = false;
             var correctAnswer = null;
             var learnerResponse = "";
-            
+
             switch (question.Type){
                 case QUESTION_TYPE_CHOICE:
                     for (var answerIndex = 0; answerIndex < question.Answers.length; answerIndex++){ 
@@ -399,10 +397,10 @@ class QuizTestBlock2(Block):
                     }
                 break;
             }
-            
+
             wasCorrect = (correctAnswer == learnerResponse);
             if (wasCorrect) {correctCount++;}
-            
+
             if (parent.RecordQuestion){
                 parent.RecordQuestion(test.Questions[i].Id, 
                                         test.Questions[i].Text, 
@@ -412,20 +410,20 @@ class QuizTestBlock2(Block):
                                         wasCorrect, 
                                         test.Questions[i].ObjectiveId);
             }
-            
+
             resultsSummary += "<div class='questionResult'><h3>Question " + i + "</h3>";
             if (wasCorrect) {
                 resultsSummary += "<em>Correct</em><br>"
             }
             else{
                 resultsSummary += "<em>Incorrect</em><br>"
-                
+
             }
             resultsSummary += "</div>";
         }
         var score = Math.round(correctCount * 100 / totalQuestions);
-        
-        
+
+
         if(score >= %s){//mode ANY
             resultsSummary += "<h3>You Pass the Test. Well done.</h3>";
             scorm.SetCompletionStatus("completed");
@@ -444,10 +442,10 @@ class QuizTestBlock2(Block):
             scorm.quit();
         }
         resultsSummary = "<h3>Score: " + score + "</h3>" + resultsSummary;
-        
-        
+
+
         document.getElementById("test").innerHTML = resultsSummary;
-        
+
         if (parent.RecordTest){
             parent.RecordTest(score);
         }
@@ -459,13 +457,13 @@ class QuizTestBlock2(Block):
     function RenderTest(test){
     	test.Questions.sort(function() {return 0.5 - Math.random()});
         document.write ("<div id='test'><form id='frmTest' action='#'>");
-        
+
         for (var i in test.Questions){
             var question = test.Questions[i];
-            
+
             document.write ("<div id='question_" + question.Id + "' class='question'>");
             document.write (question.Text);
-            
+
             switch (question.Type){
                 case QUESTION_TYPE_CHOICE:
                     var ansIndex = 0;
@@ -491,7 +489,7 @@ class QuizTestBlock2(Block):
     RenderTest(test);
     AddTagLine();
 </script>
-        '''%self.idevice.passRate
+        ''' % self.idevice.passRate
 
         return scriptStr
 
