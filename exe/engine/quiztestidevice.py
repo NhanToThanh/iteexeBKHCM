@@ -271,6 +271,7 @@ time to learn and practice using the information or skill.
         self.emphasis   = Idevice.SomeEmphasis
         self.score      = -1
         self.isAnswered = True
+        self.isSetDiff  = True
         self.passRate   = "50"
         self.questions  = []
         self.addQuestion()

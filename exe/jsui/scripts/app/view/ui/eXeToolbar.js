@@ -259,13 +259,7 @@ Ext.define('eXe.view.ui.eXeToolbar', {
                                                         accesskey: 'o',
                                                         itemId: 'file_export_scorm2004'
                                                     },
-                                                    //25/01/2018
-                                                    {
-                                                        xtype: 'accesskey_menuitem',
-                                                        text: _('SCORM2004 with Sequencing'),
-                                                        accesskey: 'l',
-                                                        itemId: 'file_export_scorm2004seq'
-                                                    },
+                                                    //25/01/201
                                                     {
                                                         xtype: 'accesskey_menuitem',
                                                         text: _('IMS Content Package'),

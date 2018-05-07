@@ -81,6 +81,10 @@ class QuizTestBlock(Block):
             if hasattr(self.idevice,'undo'): 
                 del self.idevice.undo
             for question in self.idevice.questions:
+                if not question.isHard and not question.isMedium and not question.isEasy:
+                    self.idevice.isSetDiff = False
+                    self.idevice.edit = True
+                    break
                 if question.correctAns == -2:
                     self.idevice.isAnswered = False
                     self.idevice.edit = True
@@ -103,6 +107,11 @@ class QuizTestBlock(Block):
         if not self.idevice.isAnswered:
             html += common.editModeHeading(
                 _("Please select a correct answer for each question."))
+
+        if not self.idevice.isSetDiff:
+            html += common.editModeHeading(
+                _("Please select a Difficulty level for all Quiz"))
+
         self.allQuizTitles = []
         self.__getAllQuizTitles(self.package.root, 0)
 

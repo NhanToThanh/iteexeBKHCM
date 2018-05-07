@@ -75,6 +75,7 @@ class QuizTestBlock2(Block):
         for element in self.questionElements:
             element.process(request)
 
+
         for title in self.allQuizTitles:  # chay tung cai test
             if (str(title[0]) + "hard") in request.args:
                 numHard = -1
@@ -154,6 +155,7 @@ class QuizTestBlock2(Block):
         if not self.idevice.isAnswered:
             html += common.editModeHeading(
                 _("Please select a correct answer for each question."))
+
         # if self.allQuizTitles.count(self.idevice.title) != 1:
         #    html += common.editModeHeading(
         #        _("PTitle must bu unique."))
@@ -183,10 +185,12 @@ class QuizTestBlock2(Block):
         html += "<br/><br/>"
         html += "<strong>PLease enter the number of quiz to appear in the Test, If the entered number greater than the number of Quiz, the maximun number of Quiz is set.</strong>"
         html += "<br/>"
+
         for title in self.allQuizTitles:
             html += '<strong id="diff-label" style="margin-right: 5px;">%s: </strong>' % title[0]
             html += "<br/>"
-            html += '<span>Enter number of Hard(Max: %s)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>' % str(title[1])
+            html += '<span>Enter number of Hard(Max: %s)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>' % str(
+                title[1])
             html += common.textInput(str(title[0]) + "hard")
             html += "<br/>"
             html += '<span>Enter number of Medium(Max: %s)&nbsp;: </span>' % str(title[2])

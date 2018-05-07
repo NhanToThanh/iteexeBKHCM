@@ -86,9 +86,7 @@ Ext.define('eXe.controller.Toolbar', {
                 click: {fn: this.processExportEvent, exportType: "scorm2004"}
             },
             //25/01/2018
-            '#file_export_scorm2004seq': {
-                click: {fn: this.processExportEvent, exportType: "scorm2004seq"}
-            },
+            
             '#file_export_agrega': {
                 click: {fn: this.processExportEvent, exportType: "agrega"}
             },

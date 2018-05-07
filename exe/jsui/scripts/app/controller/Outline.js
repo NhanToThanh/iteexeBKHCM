@@ -149,7 +149,7 @@ Ext.define('eXe.controller.Outline', {
 			    text: _('Extract Package'),
 			    handler: this.getController('Toolbar').extractPackage
             },{
-                text: _('Sequcing config'),
+                text: _('Sequecing config'),
                 handler: this.getController('Toolbar').seqConfig
             }
           ]
