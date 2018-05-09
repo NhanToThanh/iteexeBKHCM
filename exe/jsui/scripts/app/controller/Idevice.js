@@ -21,10 +21,6 @@
 Ext.define('eXe.controller.Idevice', {
     extend: 'Ext.app.Controller',
 
-    requires: [
-        'eXe.view.forms.TagAndDifficultyPanel',
-    ],
-
     stores: ['IdeviceXmlStore'],
 
     init: function () {
