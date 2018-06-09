@@ -471,6 +471,7 @@ class QuizTestBlock2(Block):
             switch (question.Type){
                 case QUESTION_TYPE_CHOICE:
                     var ansIndex = 0;
+                    question.Answers.sort(function() {return 0.5 - Math.random()});
                     for (var j in question.Answers){
                         var answer = question.Answers[j];
                         document.write("<div ");

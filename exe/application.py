@@ -219,6 +219,7 @@ class Application:
                _(u'An error has occurred when loading your Idevice Store. A backup is saved at %s') % backup)
             self.ideviceStore.load()
         # Make it so jelly can load objects from ~/.exe/idevices
+
         sys.path.append(self.config.configDir/'idevices')
         self.webServer = WebServer(self, self.packagePath)
         # and determine the web server's port before launching the client, so it can use the same port#:

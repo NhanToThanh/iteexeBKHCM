@@ -154,12 +154,13 @@ Ext.define('eXe.view.forms.SequencingPanel', {
                                     Ext.Msg.alert('Seclect another target', 'PLease selected another target node!');
                                 }
                                 else {
-                                    nevow_clientToServerEvent('AddTarget', this, '', nodeid, index, studyTimer, quizArray);
+
+                                nevow_clientToServerEvent('AddTarget', this, '', nodeid, index, studyTimer, quizArray);
+
+
 
                                     Ext.getCmp('sequencingwin').doClose();
-
                                 }
-
                             },
                             failure: function (form, action) {
                                 Ext.Msg.alert(_('Error'), action.result.errorMessage);
