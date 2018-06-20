@@ -188,8 +188,12 @@ class ScormPage(Page):
                 if hasattr(idevice, "isTest"):
                     pass
                 else:
-                    html += self.processInternalLinks(
-                        block.renderView(self.node.package.style, numQ = numquiz))
+                    if hasattr(idevice, "isQuiz"):
+                        html += self.processInternalLinks(
+                            block.renderViewforSCORM(self.node.package.style, numQ=numquiz))
+                    else:
+                        html += self.processInternalLinks(
+                            block.renderView(self.node.package.style, numQ = numquiz))
                 html += u'</'+articleTag+'>'+lb # iDevice div
 
         html += u"</"+sectionTag+">"+lb # /#main
