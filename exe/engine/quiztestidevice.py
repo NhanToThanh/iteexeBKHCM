@@ -133,10 +133,6 @@ click the radio button next to the correct option.""")
                                          self._questionInstruc, u'')
         self.questionTextArea.idevice = self.idevice
 
-        #self.tagTextArea =  TextAreaField(x_(u'Category:'),
-        #                                 self._tagInstruc, u'')
-        #self.tagTextArea.idevice = self.idevice
-
         self.isHard = isHard
         self.isMedium = isMedium
         self.isEasy = isEasy

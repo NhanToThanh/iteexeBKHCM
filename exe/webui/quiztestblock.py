@@ -164,10 +164,34 @@ class QuizTestBlock(Block):
             if preview: 
                 html += element.renderPreview()
             else:
+
                 html += element.renderView()
         html += '<div class="block iDevice_buttons">'+lb
         html += '<p><input type="submit" name="submitB" value="' + c_("SUBMIT ANSWERS")+ '"  onclick="calcScore2%s()" /> '%numQ + '</p>'+lb
         html += '</div>'+lb 
+        html += '<div id="quizFormScore'+self.id+'"></div>'+lb
+        html += '</form>'+lb
+        html += common.ideviceFooter(self, style, "view")
+        return html
+
+    def renderViewforSCORM(self, style, preview=False, numQ=None):
+        """
+        Returns an XHTML string for viewing this block
+        """
+        lb = "\n" #Line breaks
+        html = common.ideviceHeader(self, style, "view")
+        html += '<form name="quizForm%s" id="quizForm%s" action="javascript:calcScore2();">' % (self.idevice.id, self.idevice.id)
+        html += lb
+        html += u'<input type="hidden" name="passrate" id="passrate-'+self.idevice.id+'" value="'+self.idevice.passRate+'" />'+lb
+        for element in self.questionElements:
+            if preview:
+                html += element.renderPreview()
+            else:
+
+                html += element.renderViewforSCORM()
+        html += '<div class="block iDevice_buttons">'+lb
+        html += '<p><input type="submit" name="submitB" value="' + c_("SUBMIT ANSWERS")+ '"  onclick="calcScore2%s()" /> '%numQ + '</p>'+lb
+        html += '</div>'+lb
         html += '<div id="quizFormScore'+self.id+'"></div>'+lb
         html += '</form>'+lb
         html += common.ideviceFooter(self, style, "view")
