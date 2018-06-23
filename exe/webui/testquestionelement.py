@@ -150,7 +150,7 @@ class TestquestionElement(object):
         html += ' Hard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
         html += common.option("d" + self.keyId,
                               self.question.isMedium, "m" + fieldId)
-        html += ' Muedium &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+        html += ' Medium &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
         html += common.option("d" + self.keyId,
                               self.question.isEasy, "e" + fieldId)
         html += ' Easy &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'

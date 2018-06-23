@@ -20,7 +20,7 @@
 
 Ext.define('eXe.controller.Idevice', {
     extend: 'Ext.app.Controller',
-
+    
     stores: ['IdeviceXmlStore'],
 
     init: function () {
